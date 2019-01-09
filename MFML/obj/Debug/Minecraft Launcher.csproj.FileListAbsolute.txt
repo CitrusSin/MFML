@@ -1,0 +1,11 @@
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\bin\Debug\Minecraft Launcher.exe
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\bin\Debug\Minecraft Launcher.pdb
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft Launcher.csprojAssemblyReference.cache
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft_Launcher.Properties.Resources.resources
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft Launcher.csproj.GenerateResource.cache
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft Launcher.csproj.CoreCompileInputs.cache
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft Launcher.exe
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft Launcher.pdb
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft_Launcher.MainWindow.resources
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft_Launcher.SettingsWindow.resources
+f:\Documents\Visual Studio 2017\Projects\Minecraft Launcher\Minecraft Launcher\obj\Debug\Minecraft_Launcher.DownloadWindow.resources
