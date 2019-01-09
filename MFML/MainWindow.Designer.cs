@@ -236,6 +236,7 @@
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "Micrafast\'s Minecraft Launcher";
             this.Load += new System.EventHandler(this.MainWindow_Load);
