@@ -14,8 +14,12 @@ namespace MFML
         {
             this.VersionName = VersionName;
             var mcdir = MFML.Instance.Settings.MinecraftFolderName;
-            if (mcdir.Last() != '\\') mcdir += '\\';
-            VersionDirectory = mcdir + "versions\\" + VersionName;
+            VersionDirectory = mcdir + "versions\\" + VersionName + "\\";
+        }
+
+        public void AddUsedLibrary()
+        {
+
         }
 
         public override string ToString()

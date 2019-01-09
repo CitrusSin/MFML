@@ -3,13 +3,14 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Xml;
+using System.Linq;
 
 namespace MFML
 {
     public class Configuration
     {
 
-        string filename;
+        readonly string filename;
         XmlDocument configDoc = new XmlDocument();
 
         public Color ThemeColor
@@ -30,7 +31,12 @@ namespace MFML
 
         public string MinecraftFolderName
         {
-            get { return GetSettingByName("mcfolder"); }
+            get
+            {
+                var folder = GetSettingByName("mcfolder");
+                if (folder.Last() != '\\') folder += '\\';
+                return folder;
+            }
             set { SetSetting("mcfolder", value); }
         }
 

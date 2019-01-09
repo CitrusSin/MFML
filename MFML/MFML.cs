@@ -9,7 +9,7 @@ namespace MFML
     public class MFML
     {
         const string SETTINGS_FILE_NAME = "settings.xml";
-        public static MFML Instance { get; private set; } = null;
+        public static MFML Instance { get; private set; };
 
         public Configuration Settings { get; private set; }
         public List<MinecraftVersion> MinecraftVersions { get; private set; }
