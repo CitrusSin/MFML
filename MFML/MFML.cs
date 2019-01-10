@@ -58,6 +58,11 @@ namespace MFML
             }
         }
 
+        public void LaunchMinecraft(MinecraftVersion ver)
+        {
+            var launchProvider = new MinecraftLaunchProvider(ver);
+        }
+
         public void AddMinecraftVersion(MinecraftVersion ver)
         {
             MinecraftVersions.Add(ver);

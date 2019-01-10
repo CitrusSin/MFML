@@ -9,7 +9,7 @@ namespace MFML
 
     public delegate void DownloadProgress(string status, int percent);
 
-    public interface IDownloadProvider
+    public interface IDownloader
     {
         List<DownloadItemInfo> GetAllItemsToDownload();
         void Download(DownloadItemInfo content, DownloadProgress SetProgress);

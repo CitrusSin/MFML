@@ -27,6 +27,7 @@ namespace MFML
                 MinimizeButton.BackColor = value;
                 colorLabel1.ForeColor = value;
                 colorLabel2.ForeColor = value;
+                colorLabel3.ForeColor = value;
                 BackColor = value;
             }
         }

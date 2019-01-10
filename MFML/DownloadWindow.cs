@@ -8,10 +8,10 @@ namespace MFML
 {
     public partial class DownloadWindow : Form
     {
-        IDownloadProvider Provider;
+        IDownloader Provider;
         List<DownloadItemInfo> Items;
 
-        public DownloadWindow(IDownloadProvider Provider)
+        public DownloadWindow(IDownloader Provider)
         {
             this.Provider = Provider;
             InitializeComponent();
@@ -101,6 +101,7 @@ namespace MFML
 
         private void DownloadWindow_Load(object sender, EventArgs e)
         {
+            ThemeColor = MFML.Instance.Settings.ThemeColor;
             listBox1.Enabled = false;
             CloseButton.Enabled = false;
             SetProgress("加载所有可下载版本中。。。", 0);

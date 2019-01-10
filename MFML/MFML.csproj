@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="IDownloadProvider.cs" />
+    <Compile Include="IDownloader.cs" />
     <Compile Include="DownloadWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,8 +89,9 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MinecraftDownloadProvider.cs" />
+    <Compile Include="MinecraftDownloader.cs" />
     <Compile Include="MFML.cs" />
+    <Compile Include="MinecraftLaunchProvider.cs" />
     <Compile Include="MinecraftVersion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

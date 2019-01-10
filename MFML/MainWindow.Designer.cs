@@ -38,6 +38,7 @@
             this.playerNameBox = new System.Windows.Forms.TextBox();
             this.versionsBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.startMCButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.MinimizeButton = new System.Windows.Forms.Button();
@@ -167,6 +168,7 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.startMCButton, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.settingsButton, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(683, 3);
@@ -177,6 +179,20 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(114, 414);
             this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // startMCButton
+            // 
+            this.startMCButton.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.startMCButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.startMCButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startMCButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.startMCButton.Location = new System.Drawing.Point(3, 367);
+            this.startMCButton.Name = "startMCButton";
+            this.startMCButton.Size = new System.Drawing.Size(108, 44);
+            this.startMCButton.TabIndex = 1;
+            this.startMCButton.Text = "启动Minecraft";
+            this.startMCButton.UseVisualStyleBackColor = false;
+            this.startMCButton.Click += new System.EventHandler(this.startMCButton_Click);
             // 
             // settingsButton
             // 
@@ -263,6 +279,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button downloadGame;
+        private System.Windows.Forms.Button startMCButton;
     }
 }
 

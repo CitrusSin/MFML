@@ -45,7 +45,7 @@
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.mcFolderBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.colorLabel3 = new System.Windows.Forms.Label();
             this.BMCLAPIBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -105,7 +105,7 @@
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel1.Controls.Add(this.colorLabel2);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel1.Controls.Add(this.label5);
+            this.flowLayoutPanel1.Controls.Add(this.colorLabel3);
             this.flowLayoutPanel1.Controls.Add(this.BMCLAPIBox);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -231,16 +231,16 @@
             this.mcFolderBox.TabIndex = 1;
             this.mcFolderBox.Leave += new System.EventHandler(this.mcFolderBox_Leave);
             // 
-            // label5
+            // colorLabel3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("微软雅黑", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.label5.Location = new System.Drawing.Point(3, 215);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(223, 52);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "启动器设置";
+            this.colorLabel3.AutoSize = true;
+            this.colorLabel3.Font = new System.Drawing.Font("微软雅黑", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.colorLabel3.ForeColor = System.Drawing.Color.DeepSkyBlue;
+            this.colorLabel3.Location = new System.Drawing.Point(3, 215);
+            this.colorLabel3.Name = "colorLabel3";
+            this.colorLabel3.Size = new System.Drawing.Size(223, 52);
+            this.colorLabel3.TabIndex = 5;
+            this.colorLabel3.Text = "启动器设置";
             // 
             // BMCLAPIBox
             // 
@@ -299,7 +299,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox mcFolderBox;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label colorLabel3;
         private System.Windows.Forms.CheckBox BMCLAPIBox;
     }
 }

@@ -24,6 +24,8 @@ namespace MFML
                 versionsBox.BackColor = value;
                 settingsButton.BackColor = value;
                 playerNameBox.BackColor = value;
+                downloadGame.BackColor = value;
+                startMCButton.BackColor = value;
                 BackColor = value;
             }
         }
@@ -140,12 +142,17 @@ namespace MFML
 
         private void downloadGame_Click(object sender, EventArgs e)
         {
-            new DownloadWindow(new MinecraftDownloadProvider()).ShowDialog(this);
+            new DownloadWindow(new MinecraftDownloader()).ShowDialog(this);
         }
 
         public void AddVersion(MinecraftVersion ver)
         {
-            this.Invoke(new Func<object, int>(versionsBox.Items.Add), ver);
+            Invoke(new Func<object, int>(versionsBox.Items.Add), ver);
+        }
+
+        private void startMCButton_Click(object sender, EventArgs e)
+        {
+            Instance.LaunchMinecraft((MinecraftVersion)versionsBox.SelectedItem);
         }
     }
 }
