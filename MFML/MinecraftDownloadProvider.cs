@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
+using System.IO.Compression;
 
 namespace MFML
 {
@@ -24,12 +26,6 @@ namespace MFML
             }
         }
 
-        struct DownloadTask
-        {
-            public string localeDir;
-            public string url;
-        }
-
         const string VERSION_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
 
         public void Download(DownloadItemInfo content, DownloadProgress SetProgress)
@@ -45,12 +41,12 @@ namespace MFML
             using (WebClient wc = new WebClient())
             {
                 var json = wc.DownloadString(jsonURL);
-                var sw = new StreamWriter(new FileStream(dir+id+".json", FileMode.Create));
-                sw.Write(json);
-                sw.Close();
                 SetProgress("已获取版本下载信息", 0);
                 var seri = new JavaScriptSerializer();
                 dict = seri.Deserialize<Dictionary<string, object>>(json);
+                var sw = new StreamWriter(new FileStream(dir + id + ".json", FileMode.Create));
+                sw.Write(seri.Serialize(dict));
+                sw.Close();
             }
             using (WebClient wc = new WebClient())
             {
@@ -70,12 +66,14 @@ namespace MFML
                     Thread.Sleep(500);
                 SetProgress("minecraft.jar已下载", 0);
             }
-            List<Dictionary<string, object>> libraries = (List<Dictionary<string, object>>)dict["libraries"];
+            ArrayList libraries = (ArrayList)dict["libraries"];
             SetProgress("开始分析需要下载的前置库和本地化前置", 0);
             var libFolder = MFML.Instance.Settings.MinecraftFolderName + "libraries\\";
-            var tasks = new List<DownloadTask>();
-            foreach (var lib in libraries)
+            int AllDownloadCount = 0;
+            int DownloadedCount = 0;
+            foreach (var libO in libraries)
             {
+                var lib = (Dictionary<string, object>)libO;
                 bool NeedThisLib = true;
                 object rulesO;
                 bool hasRules = lib.TryGetValue("rules", out rulesO);
@@ -85,16 +83,17 @@ namespace MFML
                     needstate["windows"] = false;
                     needstate["osx"] = false;
                     needstate["linux"] = false;
-                    var rules = (List<Dictionary<string, object>>)rulesO;
-                    foreach (var rule in rules)
+                    var rules = (ArrayList)rulesO;
+                    foreach (var ruleO in rules)
                     {
+                        var rule = (Dictionary<string, object>)ruleO;
                         var action = (string)rule["action"];
                         object osDistrictsO;
                         bool hasOSDistricts = rule.TryGetValue("os", out osDistrictsO);
                         if (hasOSDistricts)
                         {
-                            var osDistricts = (Dictionary<string, string>)osDistrictsO;
-                            var osName = osDistricts["name"];
+                            var osDistricts = (Dictionary<string, object>)osDistrictsO;
+                            var osName = (string)osDistricts["name"];
                             needstate[osName] = (action == "allow");
                         }
                         else
@@ -113,15 +112,63 @@ namespace MFML
                     bool IsNatives = lib.TryGetValue("natives", out nativesO);
                     if (IsNatives)
                     {
-                        var classifier = ((Dictionary<string, string>)nativesO)["windows"];
+                        var classifier = (string)((Dictionary<string, object>)nativesO)["windows"];
                         var classifiers = (Dictionary<string, object>)downloads["classifiers"];
                         var item = (Dictionary<string, object>)classifiers[classifier];
-                        DownloadTask task = new DownloadTask();
-                        task.localeDir = libFolder + (string)item["path"];
-                        task.url = (string)item["url"];
-                        tasks.Add(task);
+                        var path = (libFolder + (string)item["path"]).Replace('/', '\\');
+                        var url = (string)item["url"];
+                        AllDownloadCount++;
+                        var wc = new WebClient();
+                        
+                        wc.DownloadFileCompleted += (sender, arg) =>
+                        {
+                            DownloadedCount++;
+                            Directory.CreateDirectory(dir + id + "-natives\\");
+                            lock (this)
+                            {
+                                var zip = ZipFile.Open(path, ZipArchiveMode.Read);
+                                zip.ExtractToDirectory(dir + id + "-natives\\");
+                                Directory.Delete(dir + id + "-natives\\META-INF\\", true);
+                            }
+                            wc.Dispose();
+                        };
+                        var downdir = path.Substring(0, path.LastIndexOf('\\')+1);
+                        if (!Directory.Exists(downdir))
+                        {
+                            Directory.CreateDirectory(downdir);
+                        }
+                        wc.DownloadFileAsync(new Uri(url), path);
+                        
+                        SetProgress(string.Format("开始从{0}下载文件。。。", url), 0);
+                    }
+                    object artifactO;
+                    bool HasArtifact = downloads.TryGetValue("artifact", out artifactO);
+                    if (HasArtifact)
+                    {
+                        var Artifact = (Dictionary<string, object>)artifactO;
+                        var path = (libFolder + (string)Artifact["path"]).Replace('/', '\\');
+                        var url = (string)Artifact["url"];
+                        AllDownloadCount++;
+                        var wc = new WebClient();
+                        wc.DownloadFileCompleted += (sender, arg) =>
+                        {
+                            DownloadedCount++;
+                            wc.Dispose();
+                        };
+                        var downdir = path.Substring(0, path.LastIndexOf('\\') + 1);
+                        if (!Directory.Exists(downdir))
+                        {
+                            Directory.CreateDirectory(downdir);
+                        }
+                        wc.DownloadFileAsync(new Uri(url), path);
+                        SetProgress(string.Format("开始从{0}下载文件。。。", url), 0);
                     }
                 }
+            }
+            while (DownloadedCount != AllDownloadCount)
+            {
+                SetProgress(null, (int)((DownloadedCount / (double)AllDownloadCount) * 100));
+                Thread.Sleep(500);
             }
             MFML.Instance.AddMinecraftVersion(MCVersion);
         }

@@ -5,3 +5,5 @@
 /.vs
 /MFML/obj/Debug
 /MFML/obj/Release
+/MFML/bin/Debug
+/MFML/bin/Release
