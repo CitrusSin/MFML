@@ -15,10 +15,16 @@ namespace MFML.UI
     {
         private List<Button> buttons = new List<Button>();
 
+        private readonly string title;
+        private readonly string text;
+        private readonly MessageBoxButtons types;
+
         protected MFMLMessageBox(string title, string text, MessageBoxButtons types)
         {
             InitializeComponent();
-            Initialization(title, text, types);
+            this.title = title;
+            this.text = text;
+            this.types = types;
         }
 
         private bool DragMouse = false;
@@ -128,7 +134,7 @@ namespace MFML.UI
 
         private void AddOKButton()
         {
-            AddButton("okButton", "确定", (a, b) =>
+            this.AddButton("okButton", "确定", (a, b) =>
             {
                 DialogResult = DialogResult.OK;
                 Close();
@@ -137,7 +143,7 @@ namespace MFML.UI
 
         private void AddCancelButton()
         {
-            AddButton("cancelButton", "取消", (a, b) =>
+            this.AddButton("cancelButton", "取消", (a, b) =>
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -146,7 +152,7 @@ namespace MFML.UI
 
         private void AddRetryButton()
         {
-            AddButton("retryButton", "重试", (a, b) =>
+            this.AddButton("retryButton", "重试", (a, b) =>
             {
                 DialogResult = DialogResult.Retry;
                 Close();
@@ -155,7 +161,7 @@ namespace MFML.UI
 
         private void AddYesButton()
         {
-            AddButton("yesButton", "是", (a, b) =>
+            this.AddButton("yesButton", "是", (a, b) =>
             {
                 DialogResult = DialogResult.Yes;
                 Close();
@@ -164,7 +170,7 @@ namespace MFML.UI
 
         private void AddNoButton()
         {
-            AddButton("noButton", "否", (a, b) =>
+            this.AddButton("noButton", "否", (a, b) =>
             {
                 DialogResult = DialogResult.No;
                 Close();
@@ -173,7 +179,7 @@ namespace MFML.UI
 
         private void AddIgnoreButton()
         {
-            AddButton("ignoreButton", "忽略", (a, b) =>
+            this.AddButton("ignoreButton", "忽略", (a, b) =>
             {
                 DialogResult = DialogResult.Ignore;
                 Close();
@@ -182,7 +188,7 @@ namespace MFML.UI
 
         private void AddAbortButton()
         {
-            AddButton("abortButton", "中止", (a, b) =>
+            this.AddButton("abortButton", "中止", (a, b) =>
             {
                 DialogResult = DialogResult.Abort;
                 Close();
@@ -200,8 +206,8 @@ namespace MFML.UI
             button.Text = text;
             button.Click += OnClick;
             button.UseVisualStyleBackColor = false;
-            buttonsPanel.Controls.Add(button);
-            buttons.Add(button);
+            this.buttonsPanel.Controls.Add(button);
+            this.buttons.Add(button);
         }
 
         public static DialogResult ShowMessageBox(IWin32Window owner, string title, string text, MessageBoxButtons types)
@@ -210,6 +216,11 @@ namespace MFML.UI
             DialogResult r = form.ShowDialog(owner);
             form.Dispose();
             return r;
+        }
+
+        private void MFMLMessageBox_Load(object sender, EventArgs e)
+        {
+            Initialization(this.title, this.text, this.types);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace MFML.UI
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Minimized;
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void playerNameBox_Leave(object sender, EventArgs e)
@@ -145,7 +145,10 @@ namespace MFML.UI
         {
             SettingsWindow ui = new SettingsWindow(Instance);
             ui.ShowDialog(this);
-            if (!ui.IsDisposed) ui.Dispose();
+            if (!ui.IsDisposed)
+            {
+                ui.Dispose();
+            }
         }
 
         private void downloadGame_Click(object sender, EventArgs e)

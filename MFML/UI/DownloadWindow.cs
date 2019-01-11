@@ -135,7 +135,9 @@ namespace MFML.UI
         private void SetProgress(string status, int progress)
         {
             if (status != null)
+            {
                 textBox1.Text += status + Environment.NewLine;
+            }
             textBox1.SelectionStart = textBox1.TextLength;
             textBox1.ScrollToCaret();
             progressBar1.Value = progress;

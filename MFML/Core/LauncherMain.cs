@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using MFML.Download;
 using MFML.UI;
 using MFML.Game;
@@ -22,7 +21,9 @@ namespace MFML.Core
         public static LauncherMain CreateInstance()
         {
             if (Instance != null)
+            {
                 return Instance;
+            }
             else
             {
                 new LauncherMain();
@@ -47,11 +48,15 @@ namespace MFML.Core
             // Check if minecraft's folder is existing
             var mcfolder = Settings.MinecraftFolderName;
             if (!Directory.Exists(mcfolder))
+            {
                 Directory.CreateDirectory(mcfolder);
+            }
             // Search all versions of Minecraft
             var versionsfolder = mcfolder + "\\versions";
             if (!Directory.Exists(versionsfolder))
+            {
                 Directory.CreateDirectory(versionsfolder);
+            }
             var versionfolders = Directory.GetDirectories(versionsfolder);
             MinecraftVersions = new List<MinecraftVersion>();
             foreach (string versionfolder in versionfolders)

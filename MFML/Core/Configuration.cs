@@ -11,7 +11,7 @@ namespace MFML.Core
     {
 
         readonly string filename;
-        XmlDocument configDoc = new XmlDocument();
+        readonly XmlDocument configDoc = new XmlDocument();
 
         public Color ThemeColor
         {
@@ -23,9 +23,13 @@ namespace MFML.Core
             set
             {
                 if (value.IsNamedColor)
+                {
                     SetSetting("themecolor", value.Name);
+                }
                 else
+                {
                     throw new Exception("Color is not named");
+                }
             }
         }
 
@@ -34,7 +38,10 @@ namespace MFML.Core
             get
             {
                 var folder = GetSettingByName("mcfolder");
-                if (folder.Last() != '\\') folder += '\\';
+                if (folder.Last() != '\\')
+                {
+                    folder += '\\';
+                }
                 return folder;
             }
             set { SetSetting("mcfolder", value); }
@@ -69,10 +76,7 @@ namespace MFML.Core
             get
             {
                 var bstr = GetSettingByName("usebmcl");
-                if (bstr == "true")
-                    return true;
-                else
-                    return false;
+                return bstr == "true";
             }
 
             set { SetSetting("usebmcl", value ? "true" : "false"); }
@@ -82,9 +86,13 @@ namespace MFML.Core
         {
             this.filename = filename;
             if (!File.Exists(filename))
+            {
                 NewFileInitalization();
+            }
             else
+            {
                 configDoc.Load(filename);
+            }
         }
 
         private void NewFileInitalization()

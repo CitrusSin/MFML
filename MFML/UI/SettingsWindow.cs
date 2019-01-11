@@ -16,7 +16,7 @@ namespace MFML.UI
         private bool DragMouse = false;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
-        private LauncherMain Instance;
+        private readonly LauncherMain Instance;
 
         public Color ThemeColor
         {

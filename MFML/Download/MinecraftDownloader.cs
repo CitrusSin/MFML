@@ -53,17 +53,23 @@ namespace MFML.Download
             {
                 string jarloc;
                 if (UseBmcl)
+                {
                     jarloc = "https://bmclapi2.bangbang93.com/version/" + id + "/client";
+                }
                 else
+                {
                     jarloc =
                         (string)((Dictionary<string, object>)((Dictionary<string, object>)dict["downloads"])["client"])["url"];
+                }
                 var DownloadHasDone = false;
                 SetProgress(string.Format("正在从{0}下载{1}.jar", jarloc, id), 0);
                 wc.DownloadProgressChanged += (sender, e) => SetProgress(null, e.ProgressPercentage);
                 wc.DownloadFileCompleted += (sender, e) => DownloadHasDone = true;
                 wc.DownloadFileAsync(new Uri(jarloc), MCVersion.JarPath);
                 while (!DownloadHasDone)
+                {
                     Thread.Sleep(500);
+                }
                 SetProgress("minecraft.jar已下载", 0);
             }
             // Analyze libraries and download
@@ -74,7 +80,7 @@ namespace MFML.Download
             LauncherMain.Instance.AddMinecraftVersion(MCVersion);
         }
 
-        private void DownloadAssets(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
+        private static void DownloadAssets(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
         {
             var assetsFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "assets\\";
             if (!Directory.Exists(assetsFolder))
@@ -138,7 +144,7 @@ namespace MFML.Download
             }
         }
 
-        private void DownloadLibraries(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
+        private static void DownloadLibraries(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
         {
             ArrayList libraries = (ArrayList)JsonDict["libraries"];
             var libFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\";
