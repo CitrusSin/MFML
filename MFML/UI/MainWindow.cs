@@ -10,10 +10,10 @@ namespace MFML.UI
     public partial class MainWindow : Form
     {
 
-        private bool DragMouse = false;
+        private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
-        private LauncherMain Instance;
+        private readonly LauncherMain Instance;
 
         public Color ThemeColor
         {

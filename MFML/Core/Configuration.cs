@@ -28,7 +28,7 @@ namespace MFML.Core
                 }
                 else
                 {
-                    throw new Exception("Color is not named");
+                    throw new InvalidOperationException("No color named " + value);
                 }
             }
         }

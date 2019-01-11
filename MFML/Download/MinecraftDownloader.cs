@@ -26,8 +26,8 @@ namespace MFML.Download
             }
         }
 
-        const string VERSION_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
-        const string ASSETS_ROOT = "https://resources.download.minecraft.net/";
+        readonly string MinecraftVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
+        readonly string MinecraftAssetsURL = "https://resources.download.minecraft.net/";
 
         public void Download(DownloadItemInfo content, DownloadProgress SetProgress)
         {
@@ -76,11 +76,11 @@ namespace MFML.Download
             SetProgress("开始分析需要下载的前置库和本地化前置", 0);
             DownloadLibraries(dict, MCVersion, SetProgress);
             SetProgress("开始下载资源文件", 0);
-            DownloadAssets(dict, MCVersion, SetProgress);
+            DownloadAssets(dict, SetProgress);
             LauncherMain.Instance.AddMinecraftVersion(MCVersion);
         }
 
-        private static void DownloadAssets(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
+        private void DownloadAssets(Dictionary<string, object> JsonDict, DownloadProgress SetProgress)
         {
             var assetsFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "assets\\";
             if (!Directory.Exists(assetsFolder))
@@ -121,7 +121,7 @@ namespace MFML.Download
                 var resInfo = kvpair.Value;
                 var hash = (string)resInfo["hash"];
                 var hashPath = hash.Substring(0, 2) + '\\' + hash;
-                var hashurl = ASSETS_ROOT + hashPath;
+                var hashurl = MinecraftAssetsURL + hashPath;
                 var localPath = objectsFolder + hashPath;
                 if (!Directory.Exists(objectsFolder + hash.Substring(0, 2)))
                 {
@@ -144,7 +144,7 @@ namespace MFML.Download
             }
         }
 
-        private static void DownloadLibraries(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
+        private void DownloadLibraries(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
         {
             ArrayList libraries = (ArrayList)JsonDict["libraries"];
             var libFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\";
@@ -258,7 +258,7 @@ namespace MFML.Download
             List<DownloadItemInfo> l = new List<DownloadItemInfo>();
             using (WebClient wc = new WebClient())
             {
-                var json = wc.DownloadString(VERSION_MANIFEST);
+                var json = wc.DownloadString(MinecraftVersionManifestURL);
                 var matches = Regex.Matches(json,
                     "{\"id\": \"(.*?)\", \"type\": \"(.*?)\"," +
                     " \"url\": \"(.*?)\", \"time\": \"(.*?)\"," +

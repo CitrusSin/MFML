@@ -19,7 +19,7 @@ namespace MFML.UI
             InitializeComponent();
         }
 
-        private bool DragMouse = false;
+        private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
 

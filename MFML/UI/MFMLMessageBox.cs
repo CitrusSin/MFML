@@ -27,7 +27,7 @@ namespace MFML.UI
             this.types = types;
         }
 
-        private bool DragMouse = false;
+        private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
 
@@ -129,6 +129,8 @@ namespace MFML.UI
                     AddRetryButton();
                     AddAbortButton();
                     break;
+                default:
+                    throw new InvalidOperationException("Not a value from MessageBoxButtons");
             }
         }
 

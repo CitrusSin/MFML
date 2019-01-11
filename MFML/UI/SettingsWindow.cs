@@ -13,7 +13,7 @@ namespace MFML.UI
     public partial class SettingsWindow : Form
     {
 
-        private bool DragMouse = false;
+        private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
         private readonly LauncherMain Instance;

@@ -68,6 +68,7 @@ namespace MFML.Core
 
         public void LaunchMinecraft(MinecraftVersion ver)
         {
+            var PlayerName = this.Settings.PlayerName;
             var launchProvider = new MinecraftOfflineLauncher(ver);
         }
 
