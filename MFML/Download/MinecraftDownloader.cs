@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web.Script.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
 using System.IO.Compression;
 using MFML.Core;
+using MFML.Game;
 
 namespace MFML.Download
 {
