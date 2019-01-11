@@ -3,31 +3,34 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MFML.Download;
+using MFML.UI;
+using MFML.Game;
 
-namespace MFML
+namespace MFML.Core
 {
-    public class MFML
+    public class LauncherMain
     {
         const string SETTINGS_FILE_NAME = "settings.xml";
-        public static MFML Instance { get; private set; }
+        public static LauncherMain Instance { get; private set; }
 
         public Configuration Settings { get; private set; }
         public List<MinecraftVersion> MinecraftVersions { get; private set; }
 
         MainWindow MainForm;
 
-        public static MFML CreateInstance()
+        public static LauncherMain CreateInstance()
         {
             if (Instance != null)
                 return Instance;
             else
             {
-                new MFML();
+                new LauncherMain();
                 return Instance;
             }
         }
 
-        private MFML()
+        private LauncherMain()
         {
             Instance = this;
             Settings = new Configuration(SETTINGS_FILE_NAME);
@@ -60,13 +63,20 @@ namespace MFML
 
         public void LaunchMinecraft(MinecraftVersion ver)
         {
-            var launchProvider = new MinecraftLaunchProvider(ver);
+            var launchProvider = new MinecraftLauncher(ver);
         }
 
         public void AddMinecraftVersion(MinecraftVersion ver)
         {
             MinecraftVersions.Add(ver);
             MainForm.AddVersion(ver);
+        }
+
+        public void ShowDownloadMinecraftList()
+        {
+            var downloader = new MinecraftDownloader();
+            var downloadDialog = new DownloadWindow(downloader);
+            downloadDialog.ShowDialog(MainForm);
         }
 
         public void Exit()

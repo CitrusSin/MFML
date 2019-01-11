@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MFML
+namespace MFML.Download
 {
     public class DownloadItemInfo {}
 

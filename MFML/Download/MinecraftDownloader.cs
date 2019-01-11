@@ -9,8 +9,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.IO;
 using System.IO.Compression;
+using MFML.Core;
 
-namespace MFML
+namespace MFML.Download
 {
 
     public class MinecraftDownloader : IDownloader
@@ -32,7 +33,7 @@ namespace MFML
 
         public void Download(DownloadItemInfo content, DownloadProgress SetProgress)
         {
-            var UseBmcl = MFML.Instance.Settings.UseBMCL;
+            var UseBmcl = LauncherMain.Instance.Settings.UseBMCL;
             var jsonURL = ((MinecraftVerItemInfo)content).url;
             var id = ((MinecraftVerItemInfo)content).id;
             var MCVersion = new MinecraftVersion(id);
@@ -72,18 +73,26 @@ namespace MFML
             DownloadLibraries(dict, MCVersion, SetProgress);
             SetProgress("开始下载资源文件", 0);
             DownloadAssets(dict, MCVersion, SetProgress);
-            MFML.Instance.AddMinecraftVersion(MCVersion);
+            LauncherMain.Instance.AddMinecraftVersion(MCVersion);
         }
 
         private void DownloadAssets(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
         {
-            var assetsFolder = MFML.Instance.Settings.MinecraftFolderName + "assets\\";
+            var assetsFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "assets\\";
             if (!Directory.Exists(assetsFolder))
             {
                 Directory.CreateDirectory(assetsFolder);
             }
             var indexesFolder = assetsFolder + "indexes\\";
+            if (!Directory.Exists(indexesFolder))
+            {
+                Directory.CreateDirectory(indexesFolder);
+            }
             var objectsFolder = assetsFolder + "objects\\";
+            if (!Directory.Exists(objectsFolder))
+            {
+                Directory.CreateDirectory(objectsFolder);
+            }
             var assetIndex = (Dictionary<string, object>)JsonDict["assetIndex"];
             var id = (string)assetIndex["id"];
             var url = (string)assetIndex["url"];
@@ -134,7 +143,7 @@ namespace MFML
         private void DownloadLibraries(Dictionary<string, object> JsonDict, MinecraftVersion MCVersion, DownloadProgress SetProgress)
         {
             ArrayList libraries = (ArrayList)JsonDict["libraries"];
-            var libFolder = MFML.Instance.Settings.MinecraftFolderName + "libraries\\";
+            var libFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\";
             int AllDownloadCount = 0;
             int DownloadedCount = 0;
             var nativesAccessLock = new object();
@@ -194,7 +203,10 @@ namespace MFML
                             {
                                 var zip = ZipFile.Open(path, ZipArchiveMode.Read);
                                 zip.ExtractToDirectory(nativesLoc);
-                                Directory.Delete(nativesLoc + "META-INF\\", true);
+                                if (Directory.Exists(nativesLoc + "META-INF\\"))
+                                {
+                                    Directory.Delete(nativesLoc + "META-INF\\", true);
+                                }
                             }
                             wc.Dispose();
                         };

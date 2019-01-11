@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MFML.Core;
 
-namespace MFML
+namespace MFML.UI
 {
     public partial class SettingsWindow : Form
     {
@@ -15,7 +16,7 @@ namespace MFML
         private bool DragMouse = false;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
-        private MFML Instance;
+        private LauncherMain Instance;
 
         public Color ThemeColor
         {
@@ -32,7 +33,7 @@ namespace MFML
             }
         }
 
-        public SettingsWindow(MFML Instance)
+        public SettingsWindow(LauncherMain Instance)
         {
             this.Instance = Instance;
             InitializeComponent();

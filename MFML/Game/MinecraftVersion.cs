@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MFML.Core;
 
-namespace MFML
+namespace MFML.Game
 {
     public class MinecraftVersion
     {
@@ -23,7 +24,7 @@ namespace MFML
         public MinecraftVersion(string VersionName)
         {
             this.VersionName = VersionName;
-            var mcdir = MFML.Instance.Settings.MinecraftFolderName;
+            var mcdir = LauncherMain.Instance.Settings.MinecraftFolderName;
             VersionDirectory = mcdir + "versions\\" + VersionName + "\\";
         }
 

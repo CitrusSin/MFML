@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using MFML.UI;
+using MFML.Core;
 
 namespace MFML
 {
@@ -13,9 +15,10 @@ namespace MFML
         [STAThread]
         static void Main()
         {
+            LauncherMain Instance = LauncherMain.CreateInstance();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(new MainWindow(Instance));
         }
     }
 }

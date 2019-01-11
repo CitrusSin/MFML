@@ -1,17 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
+using MFML.Download;
+using MFML.Core;
 
-namespace MFML
+namespace MFML.UI
 {
-    public partial class MainWindow : Form
+    public partial class DownloadWindow : Form
     {
+        IDownloader Provider;
+        List<DownloadItemInfo> Items;
+
+        public DownloadWindow(IDownloader Provider)
+        {
+            this.Provider = Provider;
+            InitializeComponent();
+        }
 
         private bool DragMouse = false;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
-        private MFML Instance;
 
         public Color ThemeColor
         {
@@ -21,19 +31,8 @@ namespace MFML
                 ThemeColor1 = value;
                 CloseButton.BackColor = value;
                 MinimizeButton.BackColor = value;
-                versionsBox.BackColor = value;
-                settingsButton.BackColor = value;
-                playerNameBox.BackColor = value;
-                downloadGame.BackColor = value;
-                startMCButton.BackColor = value;
                 BackColor = value;
             }
-        }
-
-        public MainWindow()
-        {
-            Instance = MFML.CreateInstance();
-            InitializeComponent();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -94,7 +93,7 @@ namespace MFML
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Instance.Exit();
+            Close();
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)
@@ -102,57 +101,53 @@ namespace MFML
             WindowState = FormWindowState.Minimized;
         }
 
-        private void playerNameBox_Leave(object sender, EventArgs e)
+        private void DownloadWindow_Load(object sender, EventArgs e)
         {
-            Instance.Settings.PlayerName = playerNameBox.Text;
+            ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
+            listBox1.Enabled = false;
+            CloseButton.Enabled = false;
+            SetProgress("加载所有可下载版本中。。。", 0);
+            downloader.RunWorkerAsync("init");
         }
 
-        private void MainWindow_Load(object sender, EventArgs e)
+        private void listBox1_DoubleClick(object sender, EventArgs e)
         {
-            Instance.FormInitalization(this);
-            ThemeColor = Instance.Settings.ThemeColor;
-            playerNameBox.Text = Instance.Settings.PlayerName;
-            versionsBox.Items.AddRange(Instance.MinecraftVersions.ToArray());
-            var mcversion = Instance.Settings.SelectedVersion;
-            if (mcversion == "")
+            CloseButton.Enabled = false;
+            listBox1.Enabled = false;
+            downloader.RunWorkerAsync(listBox1.SelectedItem);
+        }
+
+        private void downloader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (e.Argument is string && (string)e.Argument == "init")
             {
-                if (Instance.MinecraftVersions.FirstOrDefault() != default(MinecraftVersion))
-                {
-                    versionsBox.SelectedItem = Instance.MinecraftVersions.FirstOrDefault();
-                    Instance.Settings.SelectedVersion = Instance.MinecraftVersions.FirstOrDefault().VersionName;
-                }
+                Items = Provider.GetAllItemsToDownload();
+                e.Result = 0;
             }
             else
             {
-                versionsBox.SelectedItem = Instance.MinecraftVersions.Find(v => v.VersionName == mcversion);
+                Provider.Download((DownloadItemInfo)e.Argument,
+                    (a, b) => Invoke(new Action<string, int>(SetProgress), a, b));
+                e.Result = 1;
             }
         }
 
-        private void versionsBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SetProgress(string status, int progress)
         {
-            Instance.Settings.SelectedVersion = versionsBox.SelectedItem.ToString();
+            if (status != null)
+                textBox1.Text += status + Environment.NewLine;
+            textBox1.SelectionStart = textBox1.TextLength;
+            textBox1.ScrollToCaret();
+            progressBar1.Value = progress;
         }
 
-        private void settingsButton_Click(object sender, EventArgs e)
+        private void downloader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            SettingsWindow ui = new SettingsWindow(Instance);
-            ui.ShowDialog(this);
-            if (!ui.IsDisposed) ui.Dispose();
-        }
-
-        private void downloadGame_Click(object sender, EventArgs e)
-        {
-            new DownloadWindow(new MinecraftDownloader()).ShowDialog(this);
-        }
-
-        public void AddVersion(MinecraftVersion ver)
-        {
-            Invoke(new Func<object, int>(versionsBox.Items.Add), ver);
-        }
-
-        private void startMCButton_Click(object sender, EventArgs e)
-        {
-            Instance.LaunchMinecraft((MinecraftVersion)versionsBox.SelectedItem);
+            if ((int)e.Result == 0)
+                listBox1.Items.AddRange(Items.ToArray());
+            listBox1.Enabled = true;
+            CloseButton.Enabled = true;
+            SetProgress("已完成！", 100);
         }
     }
 }

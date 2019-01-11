@@ -1,4 +1,4 @@
-﻿namespace MFML
+﻿namespace MFML.UI
 {
     partial class DownloadWindow
     {

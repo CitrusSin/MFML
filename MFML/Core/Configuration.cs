@@ -5,7 +5,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 
-namespace MFML
+namespace MFML.Core
 {
     public class Configuration
     {

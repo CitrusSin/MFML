@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MFML
+namespace MFML.Game
 {
-    public class MinecraftLaunchProvider
+    public class MinecraftLauncher
     {
         public readonly MinecraftVersion Version;
 
@@ -15,12 +15,12 @@ namespace MFML
             get { return Version.JarPath; }
         }
 
-        public MinecraftLaunchProvider(MinecraftVersion version)
+        public MinecraftLauncher(MinecraftVersion version)
         {
             Version = version;
         }
 
-        public string GenerateLaunchCommandLine()
+        public virtual string GenerateLaunchCommandLine()
         {
             return null;
         }
