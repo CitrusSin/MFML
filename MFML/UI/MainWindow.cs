@@ -23,9 +23,7 @@ namespace MFML.UI
                 ThemeColor1 = value;
                 CloseButton.BackColor = value;
                 MinimizeButton.BackColor = value;
-                versionsBox.BackColor = value;
                 settingsButton.BackColor = value;
-                playerNameBox.BackColor = value;
                 downloadGame.BackColor = value;
                 startMCButton.BackColor = value;
                 BackColor = value;
@@ -106,7 +104,15 @@ namespace MFML.UI
 
         private void playerNameBox_Leave(object sender, EventArgs e)
         {
-            Instance.Settings.PlayerName = playerNameBox.Text;
+            if (playerNameBox.Text != "")
+            {
+                Instance.Settings.PlayerName = playerNameBox.Text;
+            }
+            else
+            {
+                MFMLMessageBox.ShowMessageBox(this, "错误", "游戏名不能为空！", MessageBoxButtons.OK);
+                playerNameBox.Text = Instance.Settings.PlayerName;
+            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -157,6 +163,10 @@ namespace MFML.UI
             if (playerNameBox.TextLength != 0)
             {
                 Instance.LaunchMinecraft((MinecraftVersion)versionsBox.SelectedItem);
+            }
+            else
+            {
+                MFMLMessageBox.ShowMessageBox(this, "错误", "请先设置账户或游戏名！", MessageBoxButtons.OK);
             }
         }
     }

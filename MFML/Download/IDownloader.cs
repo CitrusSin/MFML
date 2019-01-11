@@ -5,10 +5,6 @@ using System.Text;
 
 namespace MFML.Download
 {
-    public class DownloadItemInfo {}
-
-    public delegate void DownloadProgress(string status, int percent);
-
     public interface IDownloader
     {
         List<DownloadItemInfo> GetAllItemsToDownload();

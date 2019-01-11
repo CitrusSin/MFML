@@ -12,18 +12,17 @@ using MFML.Game;
 
 namespace MFML.Download
 {
-
     public class MinecraftDownloader : IDownloader
     {
-        class MinecraftVerItemInfo : DownloadItemInfo
+        public class MinecraftVerItemInfo : DownloadItemInfo
         {
-            public string id;
-            public string type;
-            public string url;
-            public string releaseTime;
+            public string Id { get; set; }
+            public string Type { get; set; }
+            public string Url { get; set; }
+            public string ReleaseTime { get; set; }
             public override string ToString()
             {
-                return "版本：" + id + " 类型：" + type + " 发布时间："+releaseTime;
+                return string.Format("版本：{0} 状态：{1} 发布时间：{2}", Id, Type, Url);
             }
         }
 
@@ -33,8 +32,8 @@ namespace MFML.Download
         public void Download(DownloadItemInfo content, DownloadProgress SetProgress)
         {
             var UseBmcl = LauncherMain.Instance.Settings.UseBMCL;
-            var jsonURL = ((MinecraftVerItemInfo)content).url;
-            var id = ((MinecraftVerItemInfo)content).id;
+            var jsonURL = ((MinecraftVerItemInfo)content).Url;
+            var id = ((MinecraftVerItemInfo)content).Id;
             var MCVersion = new MinecraftVersion(id);
             Directory.CreateDirectory(MCVersion.VersionDirectory);
             Dictionary<string, object> dict;
@@ -269,15 +268,14 @@ namespace MFML.Download
                     e.MoveNext();
                     var url = ((Group)e.Current).Value;
                     e.MoveNext();
-                    //var time = ((Group)e.Current).Value;
                     e.MoveNext();
                     var releaseTime = ((Group)e.Current).Value;
                     var vi = new MinecraftVerItemInfo
                     {
-                        id = id,
-                        type = type,
-                        url = url,
-                        releaseTime = releaseTime
+                        Id = id,
+                        Type = type,
+                        Url = url,
+                        ReleaseTime = releaseTime
                     };
                     l.Add(vi);
                 }

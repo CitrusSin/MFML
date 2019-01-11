@@ -143,11 +143,17 @@ namespace MFML.UI
 
         private void downloader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if ((int)e.Result == 0)
-                listBox1.Items.AddRange(Items.ToArray());
             listBox1.Enabled = true;
             CloseButton.Enabled = true;
             SetProgress("已完成！", 100);
+            if ((int)e.Result == 0) 
+            {
+                listBox1.Items.AddRange(Items.ToArray());
+            }
+            else
+            {
+                MFMLMessageBox.ShowMessageBox(this, "提示", "已完成", MessageBoxButtons.OK);
+            }
         }
     }
 }

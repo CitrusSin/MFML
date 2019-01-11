@@ -63,7 +63,7 @@ namespace MFML.Core
 
         public void LaunchMinecraft(MinecraftVersion ver)
         {
-            var launchProvider = new MinecraftLauncher(ver);
+            var launchProvider = new MinecraftOfflineLauncher(ver);
         }
 
         public void AddMinecraftVersion(MinecraftVersion ver)
@@ -77,6 +77,7 @@ namespace MFML.Core
             var downloader = new MinecraftDownloader();
             var downloadDialog = new DownloadWindow(downloader);
             downloadDialog.ShowDialog(MainForm);
+            downloadDialog.Dispose();
         }
 
         public void Exit()

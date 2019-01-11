@@ -20,6 +20,11 @@ namespace MFML.Game
             Version = version;
         }
 
+        protected virtual void Initalization()
+        {
+
+        }
+
         public virtual string GenerateLaunchCommandLine()
         {
             return null;
