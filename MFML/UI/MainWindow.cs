@@ -111,7 +111,7 @@ namespace MFML.UI
             else
             {
                 MFMLMessageBox.ShowMessageBox(this, "错误", "游戏名不能为空！", MessageBoxButtons.OK);
-                playerNameBox.Text = Instance.Settings.PlayerName;
+                this.playerNameBox.Focus();
             }
         }
 
@@ -165,6 +165,8 @@ namespace MFML.UI
         {
             if (playerNameBox.TextLength != 0)
             {
+                this.startMCButton.Text = "启动中。。。";
+                this.startMCButton.Enabled = false;
                 Instance.LaunchMinecraft((MinecraftVersion)versionsBox.SelectedItem);
             }
             else

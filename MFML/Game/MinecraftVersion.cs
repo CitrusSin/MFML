@@ -11,7 +11,7 @@ namespace MFML.Game
         public string VersionName { get; private set; }
         public string VersionDirectory { get; private set; }
 
-        public string VersionJsonPath
+        public string VersionManifestPath
         {
             get { return VersionDirectory + VersionName + ".json"; }
         }

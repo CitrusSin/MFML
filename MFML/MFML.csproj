@@ -79,6 +79,17 @@
     <Compile Include="Download\DownloadProgress.cs" />
     <Compile Include="Download\IDownloader.cs" />
     <Compile Include="Download\IDownloadItemInfo.cs" />
+    <Compile Include="Game\Argument.cs" />
+    <Compile Include="Game\AssetIndex.cs" />
+    <Compile Include="Game\DownloadInfo.cs" />
+    <Compile Include="Game\LibraryDownloads.cs" />
+    <Compile Include="Game\MinecraftJarDownloads.cs" />
+    <Compile Include="Game\MinecraftManifest.cs" />
+    <Compile Include="Game\MinecraftLaunchArguments.cs" />
+    <Compile Include="Game\MinecraftLibrary.cs" />
+    <Compile Include="Game\MinecraftLogging.cs" />
+    <Compile Include="Game\MinecraftLoggingType.cs" />
+    <Compile Include="Game\Rule.cs" />
     <Compile Include="UI\DownloadWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,8 +104,7 @@
     </Compile>
     <Compile Include="Download\MinecraftDownloader.cs" />
     <Compile Include="Core\LauncherMain.cs" />
-    <Compile Include="Game\MinecraftLauncher.cs" />
-    <Compile Include="Game\MinecraftOfflineLauncher.cs" />
+    <Compile Include="Launch\MinecraftLauncher.cs" />
     <Compile Include="Game\MinecraftVersion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
