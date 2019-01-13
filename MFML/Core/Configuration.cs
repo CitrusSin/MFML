@@ -78,8 +78,17 @@ namespace MFML.Core
                 var bstr = GetSettingByName("usebmcl");
                 return bstr == "true";
             }
-
             set { SetSetting("usebmcl", value ? "true" : "false"); }
+        }
+
+        public bool NeedDebug
+        {
+            get
+            {
+                var bstr = GetSettingByName("debug");
+                return bstr == "true";
+            }
+            set { SetSetting("debug", value ? "true" : "false"); }
         }
 
         public Configuration(string filename)
@@ -146,6 +155,10 @@ namespace MFML.Core
             var usebmcl = configDoc.CreateElement("usebmcl");
             usebmcl.InnerText = "true";
             settings.AppendChild(usebmcl);
+            // Debug
+            var debug = configDoc.CreateElement("debug");
+            debug.InnerText = "false";
+            settings.AppendChild(debug);
             // Save all settings initalized
             configDoc.Save(this.filename);
         }

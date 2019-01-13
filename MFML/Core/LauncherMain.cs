@@ -5,6 +5,10 @@ using System.Linq;
 using MFML.Download;
 using MFML.UI;
 using MFML.Game;
+using MFML.Launch;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace MFML.Core
 {
@@ -69,13 +73,24 @@ namespace MFML.Core
             }
         }
 
-        public void LaunchMinecraft(MinecraftVersion ver)
+        public void RunMinecraft(MinecraftVersion ver)
         {
             Settings.Save();
             var PlayerName = this.Settings.PlayerName;
-            var launchProvider = new MinecraftLauncher(ver);
-            launchProvider.PlayerName = PlayerName;
-            var cmdLine = launchProvider.GenerateLaunchCommandLine();
+            var LogWindow = new ConsoleWindow();
+            var LaunchMaker = new MinecraftOfflineLaunchMaker(ver, PlayerName, LogWindow);
+            MainForm.Hide();
+            Task MCWatcherTask = Task.Factory.StartNew(LaunchMaker.Launch);
+            if (Settings.NeedDebug)
+            {
+                Task.Factory.StartNew(LogWindow.ShowDialog);
+            }
+            while (!MCWatcherTask.IsCompleted)
+            {
+                Application.DoEvents();
+                Thread.Sleep(100);
+            }
+            MainForm.Show();
         }
 
         public void AddMinecraftVersion(MinecraftVersion ver)

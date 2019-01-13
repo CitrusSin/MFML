@@ -61,11 +61,7 @@ namespace MFML.Download
                 string jarloc = info.downloads.client.url;
                 if (UseBMCLAPI)
                 {
-                    jarloc = string.Format(
-                        "https://bmclapi2.bangbang93.com/mc/game/{0}/client/{1}/client.jar",
-                        info.downloads.client.id,
-                        info.downloads.client.sha1
-                        );
+                    jarloc = string.Format("https://bmclapi2.bangbang93.com/version/{0}/client", id);
                 }
                 var DownloadHasDone = false;
                 OnProgressChanged(string.Format("正在从{0}下载{1}.jar", jarloc, id), 0);

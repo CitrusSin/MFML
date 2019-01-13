@@ -1,22 +1,26 @@
-﻿using System;
+﻿using MFML.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using MFML.Core;
 
 namespace MFML.UI
 {
-    public partial class SettingsWindow : Form
+    public partial class ConsoleWindow : Form
     {
+        public ConsoleWindow()
+        {
+            InitializeComponent();
+        }
 
         private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
-        private readonly LauncherMain Instance;
 
         public Color ThemeColor
         {
@@ -26,17 +30,8 @@ namespace MFML.UI
                 ThemeColor1 = value;
                 CloseButton.BackColor = value;
                 MinimizeButton.BackColor = value;
-                colorLabel1.ForeColor = value;
-                colorLabel2.ForeColor = value;
-                colorLabel3.ForeColor = value;
                 BackColor = value;
             }
-        }
-
-        public SettingsWindow(LauncherMain Instance)
-        {
-            this.Instance = Instance;
-            InitializeComponent();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -105,39 +100,26 @@ namespace MFML.UI
             WindowState = FormWindowState.Minimized;
         }
 
-        private void SettingsWindow_Load(object sender, EventArgs e)
+        private void ConsoleWindow_Load(object sender, EventArgs e)
         {
-            ThemeColor = Instance.Settings.ThemeColor;
-            javaPathBox.Text = Instance.Settings.JREPath;
-            memoryBox.Text = Instance.Settings.MaxMemory.ToString();
-            mcFolderBox.Text = Instance.Settings.MinecraftFolderName;
-            BMCLAPIBox.Checked = Instance.Settings.UseBMCL;
-            debugBox.Checked = Instance.Settings.NeedDebug;
+            ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
         }
 
-        private void javaPathBox_Leave(object sender, EventArgs e)
+        private void WriteUnsafety(string ctx)
         {
-            Instance.Settings.JREPath = javaPathBox.Text;
+            richTextBox1.AppendText(ctx);
+            richTextBox1.SelectionStart = richTextBox1.TextLength;
+            richTextBox1.ScrollToCaret();
         }
 
-        private void memoryBox_Leave(object sender, EventArgs e)
+        public void WriteLine(string line)
         {
-            Instance.Settings.MaxMemory = int.Parse(memoryBox.Text);
+            Write(line + Environment.NewLine);
         }
 
-        private void mcFolderBox_Leave(object sender, EventArgs e)
+        public void Write(string ctx)
         {
-            Instance.Settings.MinecraftFolderName = mcFolderBox.Text;
-        }
-
-        private void BMCLAPIBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Instance.Settings.UseBMCL = BMCLAPIBox.Checked;
-        }
-
-        private void debugBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Instance.Settings.NeedDebug = debugBox.Checked;
+            Invoke(new Action<string>(WriteUnsafety), ctx);
         }
     }
 }

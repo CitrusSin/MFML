@@ -1,15 +1,16 @@
 ﻿using MFML.Core;
 using MFML.Game;
+using MFML.UI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
-namespace MFML.Game
+namespace MFML.Launch
 {
-    public class MinecraftLauncher
+    public abstract class MinecraftLaunchMaker
     {
         public readonly MinecraftVersion Version;
         public readonly MinecraftManifest manifest;
@@ -20,12 +21,18 @@ namespace MFML.Game
         public readonly string LibRoot;
         public readonly string JavaExe;
 
-        public MinecraftLauncher(MinecraftVersion version)
+        public Process MinecraftProcess { get; protected set; }
+        public ConsoleWindow LogWindow { get; protected set; }
+
+        public MinecraftLaunchMaker(MinecraftVersion version, string PlayerName, ConsoleWindow LogWindow)
         {
             Version = version;
+            this.LogWindow = LogWindow;
+            this.PlayerName = PlayerName;
             manifest = MinecraftManifest.AnalyzeFromVersion(Version);
             GameDir = LauncherMain.Instance.Settings.MinecraftFolderName;
             AssetsRoot = GameDir + "assets\\";
+            AssetsRoot = AssetsRoot.Substring(AssetsRoot.IndexOf('\\')+1);
             LibRoot = GameDir + "libraries\\";
             UserType = "mojang";
             var jrepath = LauncherMain.Instance.Settings.JREPath;
@@ -33,7 +40,7 @@ namespace MFML.Game
             {
                 jrepath += '\\';
             }
-            JavaExe = jrepath + "bin\\javaw.exe";
+            JavaExe = jrepath + "bin\\java.exe";
             ClassPath = this.GenerateClassPath();
         }
 
@@ -46,20 +53,53 @@ namespace MFML.Game
 
         public string PlayerName { get; set; }
 
-        public virtual string UUID
-        {
-            get
-            {
-                return Guid.NewGuid().ToString("N");
-            }
-        }
+        public abstract string UUID { get; }
 
-        public virtual string AccessToken
+        public abstract string AccessToken { get; }
+
+        public void Launch()
         {
-            get
+            var cd = Environment.CurrentDirectory;
+            if (cd.Last() != '\\')
             {
-                return Guid.NewGuid().ToString("N");
+                cd += '\\';
             }
+            string[] args = GenerateLaunchCommandLine();
+            for (int i = 1;i<args.Length;i++)
+            {
+                var arg = args[i];
+                if (arg.Contains(' '))
+                {
+                    args[i] = '"' + arg + '"';
+                }
+            }
+            var filename = args[0];
+            var cmdArgs = string.Join(" ", args.Skip(1));
+            MinecraftProcess = new Process();
+            MinecraftProcess.StartInfo.FileName = filename;
+            MinecraftProcess.StartInfo.Arguments = cmdArgs;
+            MinecraftProcess.StartInfo.UseShellExecute = false;
+            MinecraftProcess.StartInfo.RedirectStandardError = true;
+            MinecraftProcess.StartInfo.RedirectStandardInput = true;
+            MinecraftProcess.StartInfo.RedirectStandardOutput = true;
+            MinecraftProcess.StartInfo.CreateNoWindow = true;
+            MinecraftProcess.StartInfo.WorkingDirectory = cd + GameDir;
+            MinecraftProcess.Start();
+            Task.Factory.StartNew(() =>
+            {
+                while (!MinecraftProcess.HasExited)
+                {
+                    LogWindow.WriteLine(MinecraftProcess.StandardOutput.ReadLine());
+                }
+            });
+            Task.Factory.StartNew(() =>
+            {
+                while (!MinecraftProcess.HasExited)
+                {
+                    LogWindow.WriteLine(MinecraftProcess.StandardError.ReadLine());
+                }
+            });
+            MinecraftProcess.WaitForExit();
         }
 
         public virtual string[] GenerateLaunchCommandLine()
@@ -194,14 +234,14 @@ namespace MFML.Game
             return str
                 .Replace("${auth_player_name}", PlayerName)
                 .Replace("${version_name}", Version.VersionName)
-                .Replace("${game_directory}", GameDir)
+                .Replace("${game_directory}", ".")
                 .Replace("${assets_root}", AssetsRoot)
                 .Replace("${assets_index_name}", manifest.assets)
                 .Replace("${auth_uuid}", UUID)
                 .Replace("${auth_access_token}", AccessToken)
                 .Replace("${user_type}", UserType)
                 .Replace("${version_type}", manifest.type)
-                .Replace("${natives_directory}", Version.NativesPath)
+                .Replace("${natives_directory}", Version.GameNativesPath)
                 .Replace("${classpath}", ClassPath)
                 .Replace("${launcher_name}", LauncherMain.LAUNCHER_NAME)
                 .Replace("${launcher_version}", LauncherMain.LAUNCHER_VERSION);

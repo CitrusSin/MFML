@@ -167,7 +167,9 @@ namespace MFML.UI
             {
                 this.startMCButton.Text = "启动中。。。";
                 this.startMCButton.Enabled = false;
-                Instance.LaunchMinecraft((MinecraftVersion)versionsBox.SelectedItem);
+                Instance.RunMinecraft((MinecraftVersion)versionsBox.SelectedItem);
+                this.startMCButton.Text = "启动Minecraft";
+                this.startMCButton.Enabled = true;
             }
             else
             {

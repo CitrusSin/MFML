@@ -47,6 +47,7 @@
             this.mcFolderBox = new System.Windows.Forms.TextBox();
             this.colorLabel3 = new System.Windows.Forms.Label();
             this.BMCLAPIBox = new System.Windows.Forms.CheckBox();
+            this.debugBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -105,6 +106,7 @@
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel1.Controls.Add(this.colorLabel2);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel1.Controls.Add(this.debugBox);
             this.flowLayoutPanel1.Controls.Add(this.colorLabel3);
             this.flowLayoutPanel1.Controls.Add(this.BMCLAPIBox);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -236,7 +238,7 @@
             this.colorLabel3.AutoSize = true;
             this.colorLabel3.Font = new System.Drawing.Font("微软雅黑", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.colorLabel3.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.colorLabel3.Location = new System.Drawing.Point(3, 215);
+            this.colorLabel3.Location = new System.Drawing.Point(3, 252);
             this.colorLabel3.Name = "colorLabel3";
             this.colorLabel3.Size = new System.Drawing.Size(223, 52);
             this.colorLabel3.TabIndex = 5;
@@ -246,13 +248,25 @@
             // 
             this.BMCLAPIBox.AutoSize = true;
             this.BMCLAPIBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BMCLAPIBox.Location = new System.Drawing.Point(3, 270);
+            this.BMCLAPIBox.Location = new System.Drawing.Point(3, 307);
             this.BMCLAPIBox.Name = "BMCLAPIBox";
             this.BMCLAPIBox.Size = new System.Drawing.Size(279, 31);
             this.BMCLAPIBox.TabIndex = 6;
             this.BMCLAPIBox.Text = "使用BMCLAPI下载游戏文件";
             this.BMCLAPIBox.UseVisualStyleBackColor = true;
             this.BMCLAPIBox.CheckedChanged += new System.EventHandler(this.BMCLAPIBox_CheckedChanged);
+            // 
+            // debugBox
+            // 
+            this.debugBox.AutoSize = true;
+            this.debugBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.debugBox.Location = new System.Drawing.Point(3, 218);
+            this.debugBox.Name = "debugBox";
+            this.debugBox.Size = new System.Drawing.Size(251, 31);
+            this.debugBox.TabIndex = 7;
+            this.debugBox.Text = "启动游戏后打开调试窗口";
+            this.debugBox.UseVisualStyleBackColor = true;
+            this.debugBox.CheckedChanged += new System.EventHandler(this.debugBox_CheckedChanged);
             // 
             // SettingsWindow
             // 
@@ -301,5 +315,6 @@
         private System.Windows.Forms.TextBox mcFolderBox;
         private System.Windows.Forms.Label colorLabel3;
         private System.Windows.Forms.CheckBox BMCLAPIBox;
+        private System.Windows.Forms.CheckBox debugBox;
     }
 }
