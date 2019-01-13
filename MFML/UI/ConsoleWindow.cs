@@ -16,6 +16,7 @@ namespace MFML.UI
         public ConsoleWindow()
         {
             InitializeComponent();
+            this.CreateHandle();
         }
 
         private bool DragMouse;
@@ -120,6 +121,11 @@ namespace MFML.UI
         public void Write(string ctx)
         {
             Invoke(new Action<string>(WriteUnsafety), ctx);
+        }
+
+        public DialogResult ShowDialogSafely()
+        {
+            return (DialogResult)Invoke(new Func<DialogResult>(ShowDialog));
         }
     }
 }

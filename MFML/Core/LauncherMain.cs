@@ -83,12 +83,16 @@ namespace MFML.Core
             Task MCWatcherTask = Task.Factory.StartNew(LaunchMaker.Launch);
             if (Settings.NeedDebug)
             {
-                Task.Factory.StartNew(LogWindow.ShowDialog);
+                Task.Factory.StartNew(LogWindow.ShowDialogSafely);
             }
             while (!MCWatcherTask.IsCompleted)
             {
                 Application.DoEvents();
                 Thread.Sleep(100);
+            }
+            if (!Settings.NeedDebug)
+            {
+                LogWindow.Close();
             }
             MainForm.Show();
         }

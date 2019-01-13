@@ -136,68 +136,40 @@ namespace MFML.UI
 
         private void AddOKButton()
         {
-            this.AddButton("okButton", "确定", (a, b) =>
-            {
-                DialogResult = DialogResult.OK;
-                Close();
-            });
+            this.AddButton("okButton", "确定", DialogResult.OK);
         }
 
         private void AddCancelButton()
         {
-            this.AddButton("cancelButton", "取消", (a, b) =>
-            {
-                DialogResult = DialogResult.Cancel;
-                Close();
-            });
+            this.AddButton("cancelButton", "取消", DialogResult.Cancel);
         }
 
         private void AddRetryButton()
         {
-            this.AddButton("retryButton", "重试", (a, b) =>
-            {
-                DialogResult = DialogResult.Retry;
-                Close();
-            });
+            this.AddButton("retryButton", "重试", DialogResult.Retry);
         }
 
         private void AddYesButton()
         {
-            this.AddButton("yesButton", "是", (a, b) =>
-            {
-                DialogResult = DialogResult.Yes;
-                Close();
-            });
+            this.AddButton("yesButton", "是", DialogResult.Yes);
         }
 
         private void AddNoButton()
         {
-            this.AddButton("noButton", "否", (a, b) =>
-            {
-                DialogResult = DialogResult.No;
-                Close();
-            });
+            this.AddButton("noButton", "否", DialogResult.No);
         }
 
         private void AddIgnoreButton()
         {
-            this.AddButton("ignoreButton", "忽略", (a, b) =>
-            {
-                DialogResult = DialogResult.Ignore;
-                Close();
-            });
+            this.AddButton("ignoreButton", "忽略", DialogResult.Ignore);
         }
 
         private void AddAbortButton()
         {
-            this.AddButton("abortButton", "中止", (a, b) =>
-            {
-                DialogResult = DialogResult.Abort;
-                Close();
-            });
+            this.AddButton("abortButton", "中止", DialogResult.Abort);
         }
 
-        public virtual void AddButton(string name, string text, EventHandler OnClick)
+        public virtual void AddButton(string name, string text, DialogResult dr)
         {
             var button = new Button();
             button.BackColor = ThemeColor;
@@ -206,7 +178,7 @@ namespace MFML.UI
             button.Size = new Size(75, 28);
             button.TabIndex = 0;
             button.Text = text;
-            button.Click += OnClick;
+            button.DialogResult = dr;
             button.UseVisualStyleBackColor = false;
             this.buttonsPanel.Controls.Add(button);
             this.buttons.Add(button);
@@ -216,6 +188,14 @@ namespace MFML.UI
         {
             var form = new MFMLMessageBox(title, text, types);
             DialogResult r = form.ShowDialog(owner);
+            form.Dispose();
+            return r;
+        }
+
+        public static DialogResult ShowMessageBox(string title, string text, MessageBoxButtons types)
+        {
+            var form = new MFMLMessageBox(title, text, types);
+            DialogResult r = form.ShowDialog();
             form.Dispose();
             return r;
         }

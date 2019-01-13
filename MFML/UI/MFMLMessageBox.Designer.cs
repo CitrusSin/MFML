@@ -104,6 +104,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MFMLMessageBox";
             this.Text = "提示";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.MFMLMessageBox_Load);
             this.Resize += new System.EventHandler(this.MFMLMessageBox_Resize);
             this.panel1.ResumeLayout(false);

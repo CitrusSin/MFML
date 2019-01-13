@@ -1,2 +1,2 @@
 # MFML
-A Minecraft launcher (WIP)
+A Minecraft launcher

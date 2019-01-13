@@ -102,37 +102,40 @@ namespace MFML.Download
             var id = info.assetIndex.id;
             var url = info.assetIndex.url;
             var indexPath = indexesFolder + id + ".json";
-            OnProgressChanged("正在下载并解析资源目录", 0);
-            var seri = new JavaScriptSerializer();
-            Dictionary<string, Dictionary<string, Dictionary<string, object>>> dict;
-            using (var wc = new WebClient())
+            if (!File.Exists(indexPath))
             {
-                dict = seri.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, object>>>>(wc.DownloadString(url));
-            }
-            var sw = new StreamWriter(new FileStream(indexPath, FileMode.Create));
-            sw.Write(seri.Serialize(dict));
-            sw.Close();
-            OnProgressChanged("正在下载资源文件", 0);
-            var webclient = new WebClient();
-            var objects = dict["objects"];
-            int downloaded = 0;
-            foreach (var kvpair in objects)
-            {
-                var resName = kvpair.Key;
-                var resInfo = kvpair.Value;
-                var hash = (string)resInfo["hash"];
-                var hashPath = hash.Substring(0, 2) + '\\' + hash;
-                var hashurl = MinecraftAssetsURL + hashPath;
-                var localPath = objectsFolder + hashPath;
-                if (!Directory.Exists(objectsFolder + hash.Substring(0, 2)))
+                OnProgressChanged("正在下载并解析资源目录", 0);
+                var seri = new JavaScriptSerializer();
+                Dictionary<string, Dictionary<string, Dictionary<string, object>>> dict;
+                using (var wc = new WebClient())
                 {
-                    Directory.CreateDirectory(objectsFolder + hash.Substring(0, 2));
+                    dict = seri.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, object>>>>(wc.DownloadString(url));
                 }
-                webclient.DownloadFile(hashurl, localPath);
-                downloaded++;
-                OnProgressChanged(string.Format("已下载{0}。。。", resName), (int)((downloaded / (float)objects.Count)*100));
+                var sw = new StreamWriter(new FileStream(indexPath, FileMode.Create));
+                sw.Write(seri.Serialize(dict));
+                sw.Close();
+                OnProgressChanged("正在下载资源文件", 0);
+                var webclient = new WebClient();
+                var objects = dict["objects"];
+                int downloaded = 0;
+                foreach (var kvpair in objects)
+                {
+                    var resName = kvpair.Key;
+                    var resInfo = kvpair.Value;
+                    var hash = (string)resInfo["hash"];
+                    var hashPath = hash.Substring(0, 2) + '\\' + hash;
+                    var hashurl = MinecraftAssetsURL + hashPath;
+                    var localPath = objectsFolder + hashPath;
+                    if (!Directory.Exists(objectsFolder + hash.Substring(0, 2)))
+                    {
+                        Directory.CreateDirectory(objectsFolder + hash.Substring(0, 2));
+                    }
+                    webclient.DownloadFile(hashurl, localPath);
+                    downloaded++;
+                    OnProgressChanged(string.Format("已下载{0}。。。", resName), (int)((downloaded / (float)objects.Count) * 100));
+                }
+                webclient.Dispose();
             }
-            webclient.Dispose();
         }
 
         private void DownloadLibraries(MinecraftManifest info, MinecraftVersion MCVersion)
@@ -167,12 +170,31 @@ namespace MFML.Download
                         var classifiers = downloads.classifiers;
                         var item = classifiers[classifier].Clone() as DownloadInfo;
                         var path = (libFolder + item.path).Replace('/', '\\');
-                        if (UseBMCLAPI)
+                        if (!File.Exists(path))
                         {
-                            item.url = "https://bmclapi2.bangbang93.com/libraries/" + item.path;
+                            if (UseBMCLAPI)
+                            {
+                                item.url = "https://bmclapi2.bangbang93.com/libraries/" + item.path;
+                            }
+                            AllDownloadCount++;
+                            item.DownloadAsync(path, (sender, arg) =>
+                            {
+                                var NativesPath = MCVersion.NativesPath;
+                                Directory.CreateDirectory(NativesPath);
+                                lock (nativesAccessLock)
+                                {
+                                    var zip = ZipFile.Open(path, ZipArchiveMode.Read);
+                                    zip.ExtractToDirectory(NativesPath);
+                                    if (Directory.Exists(NativesPath + "META-INF\\"))
+                                    {
+                                        Directory.Delete(NativesPath + "META-INF\\", true);
+                                    }
+                                }
+                                DownloadedCount++;
+                            });
+                            OnProgressChanged(string.Format("开始从{0}下载文件。。。", item.url), 0);
                         }
-                        AllDownloadCount++;
-                        item.DownloadAsync(path, (sender, arg) =>
+                        else
                         {
                             var NativesPath = MCVersion.NativesPath;
                             Directory.CreateDirectory(NativesPath);
@@ -185,24 +207,25 @@ namespace MFML.Download
                                     Directory.Delete(NativesPath + "META-INF\\", true);
                                 }
                             }
-                            DownloadedCount++;
-                        });
-                        OnProgressChanged(string.Format("开始从{0}下载文件。。。", item.url), 0);
+                        }
                     }
                     if (downloads.artifact != null)
                     {
                         var artifact = downloads.artifact.Clone() as DownloadInfo;
                         var path = (libFolder + artifact.path).Replace('/', '\\');
-                        if (UseBMCLAPI)
+                        if (!File.Exists(path))
                         {
-                            artifact.url = "https://bmclapi2.bangbang93.com/libraries/" + artifact.path;
+                            if (UseBMCLAPI)
+                            {
+                                artifact.url = "https://bmclapi2.bangbang93.com/libraries/" + artifact.path;
+                            }
+                            AllDownloadCount++;
+                            artifact.DownloadAsync(path, (sender, arg) =>
+                            {
+                                DownloadedCount++;
+                            });
+                            OnProgressChanged(string.Format("开始从{0}下载文件。。。", artifact.url), 0);
                         }
-                        AllDownloadCount++;
-                        artifact.DownloadAsync(path, (sender, arg) =>
-                        {
-                            DownloadedCount++;
-                        });
-                        OnProgressChanged(string.Format("开始从{0}下载文件。。。", artifact.url), 0);
                     }
                 }
             }

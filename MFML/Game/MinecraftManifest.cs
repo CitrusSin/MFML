@@ -12,6 +12,7 @@ namespace MFML.Game
     {
         public string id;
         public MinecraftLaunchArguments arguments;
+        public string minecraftArguments;
         public string mainClass;
         public AssetIndex assetIndex;
         public string assets;

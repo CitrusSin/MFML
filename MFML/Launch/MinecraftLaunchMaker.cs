@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 
 namespace MFML.Launch
 {
@@ -100,6 +101,16 @@ namespace MFML.Launch
                 }
             });
             MinecraftProcess.WaitForExit();
+            if (MinecraftProcess.ExitCode != 0)
+            {
+                var result = MFMLMessageBox.ShowMessageBox("警告",
+                    "检测到Minecraft运行发生错误！" + Environment.NewLine + "请选择是否查看调试窗口",
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    LogWindow.ShowDialogSafely();
+                }
+            }
         }
 
         public virtual string[] GenerateLaunchCommandLine()
@@ -107,7 +118,6 @@ namespace MFML.Launch
             var seri = new JavaScriptSerializer();
             var args = new List<string>();
             args.Add(JavaExe);
-            var jvmargs = manifest.arguments.jvm;
             args.Add("-Dminecraft.client.jar="+Version.JarPath);
             args.Add("-XX:+UnlockExperimentalVMOptions");
             args.Add("-XX:+UseG1GC");
@@ -116,76 +126,91 @@ namespace MFML.Launch
             {
                 args.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
             }
-            foreach (var argo in jvmargs)
+            if (manifest.arguments != null)
             {
-                if (argo is string)
+                var jvmargs = manifest.arguments.jvm;
+                foreach (var argo in jvmargs)
                 {
-                    args.Add(ProcessArgument(argo as string));
-                }
-                else
-                {
-                    var arg = seri.ConvertToType<Argument>(argo);
-                    bool ShouldAddThisArgument = true;
-                    var rules = arg.rules;
-                    foreach (var rule in rules)
+                    if (argo is string)
                     {
-                        if (!rule.Allowed)
-                        {
-                            ShouldAddThisArgument = false;
-                            break;
-                        }
+                        args.Add(ProcessArgument(argo as string));
                     }
-                    if (ShouldAddThisArgument)
+                    else
                     {
-                        if (arg.value is List<string>)
+                        var arg = seri.ConvertToType<Argument>(argo);
+                        bool ShouldAddThisArgument = true;
+                        var rules = arg.rules;
+                        foreach (var rule in rules)
                         {
-                            foreach (var str in (List<string>)arg.value)
+                            if (!rule.Allowed)
                             {
-                                args.Add(ProcessArgument(str));
+                                ShouldAddThisArgument = false;
+                                break;
                             }
                         }
-                        else if (arg.value is string)
+                        if (ShouldAddThisArgument)
                         {
-                            args.Add(ProcessArgument((string)arg.value));
+                            if (arg.value is List<string>)
+                            {
+                                foreach (var str in (List<string>)arg.value)
+                                {
+                                    args.Add(ProcessArgument(str));
+                                }
+                            }
+                            else if (arg.value is string)
+                            {
+                                args.Add(ProcessArgument((string)arg.value));
+                            }
+                        }
+                    }
+                }
+                args.Add(manifest.mainClass);
+                var mcargs = manifest.arguments.game;
+                foreach (var argo in mcargs)
+                {
+                    if (argo is string)
+                    {
+                        args.Add(ProcessArgument(argo as string));
+                    }
+                    else
+                    {
+                        var arg = seri.ConvertToType<Argument>(argo);
+                        bool ShouldAddThisArgument = true;
+                        var rules = arg.rules;
+                        foreach (var rule in rules)
+                        {
+                            if (!rule.Allowed)
+                            {
+                                ShouldAddThisArgument = false;
+                                break;
+                            }
+                        }
+                        if (ShouldAddThisArgument)
+                        {
+                            if (arg.value is List<string>)
+                            {
+                                foreach (var str in (List<string>)arg.value)
+                                {
+                                    args.Add(ProcessArgument(str));
+                                }
+                            }
+                            else if (arg.value is string)
+                            {
+                                args.Add(ProcessArgument((string)arg.value));
+                            }
                         }
                     }
                 }
             }
-            args.Add(manifest.mainClass);
-            var mcargs = manifest.arguments.game;
-            foreach (var argo in mcargs)
+            else
             {
-                if (argo is string)
+                args.Add("-cp");
+                args.Add(ClassPath);
+                args.Add(manifest.mainClass);
+                var argtext = manifest.minecraftArguments.Split(' ');
+                foreach (var arg in argtext)
                 {
-                    args.Add(ProcessArgument(argo as string));
-                }
-                else
-                {
-                    var arg = seri.ConvertToType<Argument>(argo);
-                    bool ShouldAddThisArgument = true;
-                    var rules = arg.rules;
-                    foreach (var rule in rules)
-                    {
-                        if (!rule.Allowed)
-                        {
-                            ShouldAddThisArgument = false;
-                            break;
-                        }
-                    }
-                    if (ShouldAddThisArgument)
-                    {
-                        if (arg.value is List<string>)
-                        {
-                            foreach (var str in (List<string>)arg.value)
-                            {
-                                args.Add(ProcessArgument(str));
-                            }
-                        }
-                        else if (arg.value is string)
-                        {
-                            args.Add(ProcessArgument((string)arg.value));
-                        }
-                    }
+                    args.Add(ProcessArgument(arg));
                 }
             }
             return args.ToArray();
@@ -240,6 +265,7 @@ namespace MFML.Launch
                 .Replace("${auth_uuid}", UUID)
                 .Replace("${auth_access_token}", AccessToken)
                 .Replace("${user_type}", UserType)
+                .Replace("${user_properties}", "{}")
                 .Replace("${version_type}", manifest.type)
                 .Replace("${natives_directory}", Version.GameNativesPath)
                 .Replace("${classpath}", ClassPath)
