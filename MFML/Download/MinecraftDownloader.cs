@@ -151,30 +151,15 @@ namespace MFML.Download
                 bool NeedThisLib = true;
                 if (lib.rules != null)
                 {
-                    var needstate = new Dictionary<string, bool>
-                    {
-                        ["windows"] = false,
-                        ["osx"] = false,
-                        ["linux"] = false
-                    };
                     var rules = lib.rules;
                     foreach (var rule in rules)
                     {
-                        var action = rule.AllowIfConditionRight;
-                        if (rule.os != null)
+                        if(!rule.Allowed)
                         {
-                            var osDistricts = rule.os;
-                            var osName = osDistricts.name;
-                            needstate[osName] = action;
-                        }
-                        else
-                        {
-                            needstate["windows"] = action;
-                            needstate["osx"] = action;
-                            needstate["linux"] = action;
+                            NeedThisLib = false;
+                            break;
                         }
                     }
-                    NeedThisLib = needstate["windows"];
                 }
                 if (NeedThisLib)
                 {

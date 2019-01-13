@@ -17,16 +17,27 @@ namespace MFML.Game
         public readonly string AssetsRoot;
         public readonly string UserType;
         public readonly string ClassPath;
+        public readonly string LibRoot;
+        public readonly string JavaExe;
 
         public MinecraftLauncher(MinecraftVersion version)
         {
             Version = version;
             manifest = MinecraftManifest.AnalyzeFromVersion(Version);
             GameDir = LauncherMain.Instance.Settings.MinecraftFolderName;
-            AssetsRoot = GameDir + "\\assets";
+            AssetsRoot = GameDir + "assets\\";
+            LibRoot = GameDir + "libraries\\";
             UserType = "mojang";
+            var jrepath = LauncherMain.Instance.Settings.JREPath;
+            if (jrepath.Last() != '\\')
+            {
+                jrepath += '\\';
+            }
+            JavaExe = jrepath + "bin\\javaw.exe";
             ClassPath = this.GenerateClassPath();
         }
+
+        public virtual bool IsOffline { get { return true; } }
 
         public string MinecraftClientJar
         {
@@ -39,7 +50,7 @@ namespace MFML.Game
         {
             get
             {
-                return Guid.NewGuid().ToString();
+                return Guid.NewGuid().ToString("N");
             }
         }
 
@@ -47,7 +58,7 @@ namespace MFML.Game
         {
             get
             {
-                return Guid.NewGuid().ToString();
+                return Guid.NewGuid().ToString("N");
             }
         }
 
@@ -55,25 +66,127 @@ namespace MFML.Game
         {
             var seri = new JavaScriptSerializer();
             var args = new List<string>();
+            args.Add(JavaExe);
             var jvmargs = manifest.arguments.jvm;
+            args.Add("-Dminecraft.client.jar="+Version.JarPath);
+            args.Add("-XX:+UnlockExperimentalVMOptions");
+            args.Add("-XX:+UseG1GC");
+            args.Add(string.Format("-Xmx{0}m", LauncherMain.Instance.Settings.MaxMemory));
+            if (IsOffline)
+            {
+                args.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+            }
             foreach (var argo in jvmargs)
             {
                 if (argo is string)
                 {
-                    args.Add(this.ProcessArgument(argo as string));
+                    args.Add(ProcessArgument(argo as string));
                 }
                 else
                 {
                     var arg = seri.ConvertToType<Argument>(argo);
-
+                    bool ShouldAddThisArgument = true;
+                    var rules = arg.rules;
+                    foreach (var rule in rules)
+                    {
+                        if (!rule.Allowed)
+                        {
+                            ShouldAddThisArgument = false;
+                            break;
+                        }
+                    }
+                    if (ShouldAddThisArgument)
+                    {
+                        if (arg.value is List<string>)
+                        {
+                            foreach (var str in (List<string>)arg.value)
+                            {
+                                args.Add(ProcessArgument(str));
+                            }
+                        }
+                        else if (arg.value is string)
+                        {
+                            args.Add(ProcessArgument((string)arg.value));
+                        }
+                    }
                 }
             }
-            return null;
+            args.Add(manifest.mainClass);
+            var mcargs = manifest.arguments.game;
+            foreach (var argo in mcargs)
+            {
+                if (argo is string)
+                {
+                    args.Add(ProcessArgument(argo as string));
+                }
+                else
+                {
+                    var arg = seri.ConvertToType<Argument>(argo);
+                    bool ShouldAddThisArgument = true;
+                    var rules = arg.rules;
+                    foreach (var rule in rules)
+                    {
+                        if (!rule.Allowed)
+                        {
+                            ShouldAddThisArgument = false;
+                            break;
+                        }
+                    }
+                    if (ShouldAddThisArgument)
+                    {
+                        if (arg.value is List<string>)
+                        {
+                            foreach (var str in (List<string>)arg.value)
+                            {
+                                args.Add(ProcessArgument(str));
+                            }
+                        }
+                        else if (arg.value is string)
+                        {
+                            args.Add(ProcessArgument((string)arg.value));
+                        }
+                    }
+                }
+            }
+            return args.ToArray();
         }
 
         private string GenerateClassPath()
         {
-            return null;
+            var cd = Environment.CurrentDirectory;
+            if (cd.Last() != '\\')
+            {
+                cd += "\\";
+            }
+            var pathes = new List<string>();
+            var libraries = manifest.libraries;
+            foreach (var lib in libraries)
+            {
+                bool NeedThisLib = true;
+                if (lib.rules != null)
+                {
+                    var rules = lib.rules;
+                    foreach (var rule in rules)
+                    {
+                        if (!rule.Allowed)
+                        {
+                            NeedThisLib = false;
+                            break;
+                        }
+                    }
+                }
+                if (NeedThisLib)
+                {
+                    if (lib.downloads.artifact != null)
+                    {
+                        var artifact = lib.downloads.artifact;
+                        var path = cd + LibRoot + artifact.path.Replace('/', '\\');
+                        pathes.Add(path);
+                    }
+                }
+            }
+            pathes.Add(cd + Version.JarPath);
+            return string.Join(";", pathes);
         }
 
         private string ProcessArgument(string str)
@@ -89,6 +202,7 @@ namespace MFML.Game
                 .Replace("${user_type}", UserType)
                 .Replace("${version_type}", manifest.type)
                 .Replace("${natives_directory}", Version.NativesPath)
+                .Replace("${classpath}", ClassPath)
                 .Replace("${launcher_name}", LauncherMain.LAUNCHER_NAME)
                 .Replace("${launcher_version}", LauncherMain.LAUNCHER_VERSION);
         }

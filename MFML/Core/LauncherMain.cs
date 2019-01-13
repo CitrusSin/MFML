@@ -74,6 +74,8 @@ namespace MFML.Core
             Settings.Save();
             var PlayerName = this.Settings.PlayerName;
             var launchProvider = new MinecraftLauncher(ver);
+            launchProvider.PlayerName = PlayerName;
+            var cmdLine = launchProvider.GenerateLaunchCommandLine();
         }
 
         public void AddMinecraftVersion(MinecraftVersion ver)

@@ -9,6 +9,6 @@ namespace MFML.Game
     public class Argument
     {
         public List<Rule> rules;
-        public List<string> value;
+        public object value;
     }
 }

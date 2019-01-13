@@ -12,6 +12,7 @@ namespace MFML.Game
         {
             public string name;
             public string arch;
+            public string version;
             public bool ConditionRight
             {
                 get
@@ -19,6 +20,11 @@ namespace MFML.Game
                     if (this.name == "windows")
                     {
                         if (this.arch != null && this.arch != ((Environment.Is64BitProcess) ? "x64" : "x86"))
+                        {
+                            return false;
+                        }
+                        if (this.version != null &&
+                            this.version.Substring(1, version.IndexOf('.')) != Environment.OSVersion.Version.Major.ToString())
                         {
                             return false;
                         }
@@ -32,6 +38,22 @@ namespace MFML.Game
         public string action;
         public OS os;
         public Dictionary<string, bool> features;
+
+        public bool Allowed
+        {
+            get
+            {
+                if (os != null && !os.ConditionRight)
+                {
+                    return !AllowIfConditionRight;
+                }
+                if (features != null)
+                {
+                    return !AllowIfConditionRight;
+                }
+                return AllowIfConditionRight;
+            }
+        }
 
         public bool AllowIfConditionRight
         {
