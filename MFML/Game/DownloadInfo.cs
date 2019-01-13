@@ -9,13 +9,18 @@ using System.Threading.Tasks;
 
 namespace MFML.Game
 {
-    public class DownloadInfo
+    public class DownloadInfo : ICloneable
     {
         public string id;
         public string path;
         public string url;
         public string sha1;
         public long size;
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
         public void DownloadAsync()
         {

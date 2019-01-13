@@ -76,8 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
+    <Compile Include="Download\Downloader.cs" />
     <Compile Include="Download\DownloadProgress.cs" />
-    <Compile Include="Download\IDownloader.cs" />
     <Compile Include="Download\IDownloadItemInfo.cs" />
     <Compile Include="Game\Argument.cs" />
     <Compile Include="Game\AssetIndex.cs" />

@@ -10,10 +10,10 @@ namespace MFML.UI
 {
     public partial class DownloadWindow : Form
     {
-        IDownloader Provider;
+        Downloader Provider;
         List<DownloadItemInfo> Items;
 
-        public DownloadWindow(IDownloader Provider)
+        public DownloadWindow(Downloader Provider)
         {
             this.Provider = Provider;
             InitializeComponent();
@@ -103,6 +103,7 @@ namespace MFML.UI
 
         private void DownloadWindow_Load(object sender, EventArgs e)
         {
+            Provider.OnProgressChanged += (a, b) => Invoke(new Action<string, int>(SetProgress), a, b);
             ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
             listBox1.Enabled = false;
             CloseButton.Enabled = false;
@@ -126,8 +127,8 @@ namespace MFML.UI
             }
             else
             {
-                Provider.Download((DownloadItemInfo)e.Argument,
-                    (a, b) => Invoke(new Action<string, int>(SetProgress), a, b));
+                Provider.SelectedItem = e.Argument as DownloadItemInfo;
+                Provider.Download();
                 e.Result = 1;
             }
         }
@@ -137,9 +138,9 @@ namespace MFML.UI
             if (status != null)
             {
                 textBox1.Text += status + Environment.NewLine;
+                textBox1.SelectionStart = textBox1.TextLength;
+                textBox1.ScrollToCaret();
             }
-            textBox1.SelectionStart = textBox1.TextLength;
-            textBox1.ScrollToCaret();
             progressBar1.Value = progress;
         }
 

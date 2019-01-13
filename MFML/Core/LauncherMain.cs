@@ -11,7 +11,10 @@ namespace MFML.Core
     public class LauncherMain
     {
         const string SETTINGS_FILE_NAME = "settings.xml";
+
         public static LauncherMain Instance { get; private set; }
+        public const string LAUNCHER_NAME = "Micrafast's Minecraft Launcher";
+        public const string LAUNCHER_VERSION = "b0.1.0001";
 
         public Configuration Settings { get; private set; }
         public List<MinecraftVersion> MinecraftVersions { get; private set; }
@@ -68,6 +71,7 @@ namespace MFML.Core
 
         public void LaunchMinecraft(MinecraftVersion ver)
         {
+            Settings.Save();
             var PlayerName = this.Settings.PlayerName;
             var launchProvider = new MinecraftLauncher(ver);
         }
@@ -80,7 +84,8 @@ namespace MFML.Core
 
         public void ShowDownloadMinecraftList()
         {
-            var downloader = new MinecraftDownloader();
+            Settings.Save();
+            var downloader = new MinecraftDownloader(Settings.UseBMCL, Settings.MinecraftFolderName);
             var downloadDialog = new DownloadWindow(downloader);
             downloadDialog.ShowDialog(MainForm);
             downloadDialog.Dispose();

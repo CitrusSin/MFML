@@ -21,6 +21,11 @@ namespace MFML.Game
             get { return VersionDirectory + VersionName + ".jar"; }
         }
 
+        public string NativesPath
+        {
+            get { return VersionDirectory + VersionName + "-natives\\"; }
+        }
+
         public MinecraftVersion(string VersionName)
         {
             this.VersionName = VersionName;
