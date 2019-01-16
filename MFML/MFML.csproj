@@ -27,6 +27,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,6 +61,15 @@
     <ApplicationIcon>Resources\MainIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -78,7 +89,7 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Download\Downloader.cs" />
     <Compile Include="Download\DownloadProgress.cs" />
-    <Compile Include="Download\IDownloadItemInfo.cs" />
+    <Compile Include="Download\DownloadItemInfo.cs" />
     <Compile Include="Game\Argument.cs" />
     <Compile Include="Game\AssetIndex.cs" />
     <Compile Include="Game\DownloadInfo.cs" />
@@ -153,6 +164,7 @@
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -177,4 +189,20 @@
     <None Include="Resources\MainIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Code to merge the assemblies into one:setup.exe -->
+  <UsingTask TaskName="ILMerge.MSBuild.Tasks.ILMerge" AssemblyFile="$(SolutionDir)\packages\ILMerge.MSBuild.Tasks.1.0.0.3\tools\ILMerge.MSBuild.Tasks.dll" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <MergeAsm Include="$(OutputPath)$(TargetFileName)" />
+      <MergeAsm Include="$(OutputPath)MetroFramework.dll" />
+      <MergeAsm Include="$(OutputPath)MetroFramework.Design.dll" />
+      <MergeAsm Include="$(OutputPath)MetroFramework.Fonts.dll" />
+    </ItemGroup>
+    <PropertyGroup>
+      <MergedAssembly>$(ProjectDir)$(OutDir)MFML_Packed.exe</MergedAssembly>
+      <!-- 这儿改成需要做输出的exe名 -->
+    </PropertyGroup>
+    <Message Text="ILMerge @(MergeAsm) -&gt; $(MergedAssembly)" Importance="high" />
+    <ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedAssembly)" TargetKind="SameAsPrimaryAssembly" />
+  </Target>
 </Project>

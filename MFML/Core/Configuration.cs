@@ -17,19 +17,11 @@ namespace MFML.Core
         {
             get
             {
-                var colorStr = GetSettingByName("themecolor");
-                return Color.FromName(colorStr);
+                return Color.DeepSkyBlue;
             }
             set
             {
-                if (value.IsNamedColor)
-                {
-                    SetSetting("themecolor", value.Name);
-                }
-                else
-                {
-                    throw new InvalidOperationException("No color named " + value);
-                }
+                return;
             }
         }
 
@@ -111,10 +103,6 @@ namespace MFML.Core
             // Root node
             var settings = configDoc.CreateElement("settings");
             configDoc.AppendChild(settings);
-            // Theme color setting
-            var color = configDoc.CreateElement("themecolor");
-            color.InnerText = "DeepSkyBlue";
-            settings.AppendChild(color);
             // Minecraft folder setting
             var mcfolder = configDoc.CreateElement("mcfolder");
             mcfolder.InnerText = ".minecraft";

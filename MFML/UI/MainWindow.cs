@@ -163,7 +163,7 @@ namespace MFML.UI
 
         private void startMCButton_Click(object sender, EventArgs e)
         {
-            if (playerNameBox.TextLength != 0)
+            if (playerNameBox.Text.Length != 0)
             {
                 this.startMCButton.Text = "启动中。。。";
                 this.startMCButton.Enabled = false;

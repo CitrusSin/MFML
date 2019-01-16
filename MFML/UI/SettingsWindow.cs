@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using MFML.Core;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using MFML.Core;
 
 namespace MFML.UI
 {
@@ -26,9 +21,6 @@ namespace MFML.UI
                 ThemeColor1 = value;
                 CloseButton.BackColor = value;
                 MinimizeButton.BackColor = value;
-                colorLabel1.ForeColor = value;
-                colorLabel2.ForeColor = value;
-                colorLabel3.ForeColor = value;
                 BackColor = value;
             }
         }

@@ -35,13 +35,13 @@
             this.downloadGame = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.playerNameBox = new System.Windows.Forms.TextBox();
-            this.versionsBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.startMCButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.MinimizeButton = new System.Windows.Forms.Button();
+            this.versionsBox = new MetroFramework.Controls.MetroComboBox();
+            this.playerNameBox = new MetroFramework.Controls.MetroTextBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -85,15 +85,15 @@
             this.tableLayoutPanel2.Controls.Add(this.downloadGame, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.playerNameBox, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.versionsBox, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.playerNameBox, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.Black;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(234, 414);
@@ -121,7 +121,7 @@
             this.label2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(3, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 30);
+            this.label2.Size = new System.Drawing.Size(64, 34);
             this.label2.TabIndex = 2;
             this.label2.Text = "版本：";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -137,31 +137,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "游戏名：";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // playerNameBox
-            // 
-            this.playerNameBox.BackColor = System.Drawing.Color.White;
-            this.playerNameBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.playerNameBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.playerNameBox.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.playerNameBox.Location = new System.Drawing.Point(73, 3);
-            this.playerNameBox.Name = "playerNameBox";
-            this.playerNameBox.Size = new System.Drawing.Size(158, 23);
-            this.playerNameBox.TabIndex = 1;
-            this.playerNameBox.Leave += new System.EventHandler(this.playerNameBox_Leave);
-            // 
-            // versionsBox
-            // 
-            this.versionsBox.BackColor = System.Drawing.Color.White;
-            this.versionsBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.versionsBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.versionsBox.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.versionsBox.FormattingEnabled = true;
-            this.versionsBox.Location = new System.Drawing.Point(73, 31);
-            this.versionsBox.Name = "versionsBox";
-            this.versionsBox.Size = new System.Drawing.Size(158, 25);
-            this.versionsBox.TabIndex = 3;
-            this.versionsBox.SelectedIndexChanged += new System.EventHandler(this.versionsBox_SelectedIndexChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -241,6 +216,47 @@
             this.MinimizeButton.UseVisualStyleBackColor = true;
             this.MinimizeButton.Click += new System.EventHandler(this.MinimizeButton_Click);
             // 
+            // versionsBox
+            // 
+            this.versionsBox.FormattingEnabled = true;
+            this.versionsBox.ItemHeight = 23;
+            this.versionsBox.Location = new System.Drawing.Point(73, 31);
+            this.versionsBox.Name = "versionsBox";
+            this.versionsBox.Size = new System.Drawing.Size(157, 29);
+            this.versionsBox.TabIndex = 5;
+            this.versionsBox.UseSelectable = true;
+            // 
+            // playerNameBox
+            // 
+            // 
+            // 
+            // 
+            this.playerNameBox.CustomButton.Image = null;
+            this.playerNameBox.CustomButton.Location = new System.Drawing.Point(138, 2);
+            this.playerNameBox.CustomButton.Name = "";
+            this.playerNameBox.CustomButton.Size = new System.Drawing.Size(17, 17);
+            this.playerNameBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.playerNameBox.CustomButton.TabIndex = 1;
+            this.playerNameBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.playerNameBox.CustomButton.UseSelectable = true;
+            this.playerNameBox.CustomButton.Visible = false;
+            this.playerNameBox.Lines = new string[0];
+            this.playerNameBox.Location = new System.Drawing.Point(73, 3);
+            this.playerNameBox.MaxLength = 32767;
+            this.playerNameBox.Name = "playerNameBox";
+            this.playerNameBox.PasswordChar = '\0';
+            this.playerNameBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.playerNameBox.SelectedText = "";
+            this.playerNameBox.SelectionLength = 0;
+            this.playerNameBox.SelectionStart = 0;
+            this.playerNameBox.ShortcutsEnabled = true;
+            this.playerNameBox.ShowClearButton = true;
+            this.playerNameBox.Size = new System.Drawing.Size(158, 22);
+            this.playerNameBox.TabIndex = 6;
+            this.playerNameBox.UseSelectable = true;
+            this.playerNameBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.playerNameBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -272,13 +288,13 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox playerNameBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox versionsBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button downloadGame;
         private System.Windows.Forms.Button startMCButton;
+        private MetroFramework.Controls.MetroComboBox versionsBox;
+        private MetroFramework.Controls.MetroTextBox playerNameBox;
     }
 }
 

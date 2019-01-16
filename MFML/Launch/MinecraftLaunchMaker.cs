@@ -204,6 +204,7 @@ namespace MFML.Launch
             }
             else
             {
+                args.Add(string.Format("-Djava.library.path={0}", Version.GameNativesPath));
                 args.Add("-cp");
                 args.Add(ClassPath);
                 args.Add(manifest.mainClass);

@@ -33,10 +33,10 @@
             this.MinimizeButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.downloader = new System.ComponentModel.BackgroundWorker();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -88,9 +88,9 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.listBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.progressBar1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.listBox1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -101,17 +101,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(550, 469);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // listBox1
-            // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 17;
-            this.listBox1.Location = new System.Drawing.Point(3, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(544, 263);
-            this.listBox1.TabIndex = 0;
-            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
             // progressBar1
             // 
@@ -136,6 +125,17 @@
             // 
             this.downloader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.downloader_DoWork);
             this.downloader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.downloader_RunWorkerCompleted);
+            // 
+            // listBox1
+            // 
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 17;
+            this.listBox1.Location = new System.Drawing.Point(3, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(544, 263);
+            this.listBox1.TabIndex = 3;
+            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
             // DownloadWindow
             // 
@@ -166,8 +166,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.ComponentModel.BackgroundWorker downloader;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

@@ -125,6 +125,7 @@ namespace MFML.UI
 
         public DialogResult ShowDialogSafely()
         {
+            Invoke(new Action(() => Visible = false));
             return (DialogResult)Invoke(new Func<DialogResult>(ShowDialog));
         }
     }
