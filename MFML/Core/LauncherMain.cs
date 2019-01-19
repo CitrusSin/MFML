@@ -115,7 +115,7 @@ namespace MFML.Core
         public void Exit()
         {
             Settings.Save();
-            MainForm.Close();
+            Application.Exit();
         }
 
     }

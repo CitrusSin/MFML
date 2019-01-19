@@ -1,8 +1,5 @@
-﻿using MFML.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,29 +8,10 @@ using System.Windows.Forms;
 
 namespace MFML.UI
 {
-    public partial class ConsoleWindow : Form
+    public class BasicWindow : Form
     {
-        public ConsoleWindow()
-        {
-            InitializeComponent();
-            this.CreateHandle();
-        }
-
         private bool DragMouse;
         private Point MouseDragPoint;
-        private Color ThemeColor1 = Color.DeepSkyBlue;
-
-        public Color ThemeColor
-        {
-            get { return ThemeColor1; }
-            set
-            {
-                ThemeColor1 = value;
-                CloseButton.BackColor = value;
-                MinimizeButton.BackColor = value;
-                BackColor = value;
-            }
-        }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -70,7 +48,7 @@ namespace MFML.UI
             Graphics g = CreateGraphics();
             float h = SystemFonts.CaptionFont.GetHeight();
             RectangleF textRect = new RectangleF(10, 15 - (h / 2), Width - 60, 15 + (h / 2));
-            Brush b = new SolidBrush(ThemeColor);
+            Brush b = new SolidBrush(Color.DeepSkyBlue);
             g.FillRectangle(b, textRect);
             b.Dispose();
             g.DrawString(Text, SystemFonts.CaptionFont, Brushes.White, textRect);
@@ -88,49 +66,17 @@ namespace MFML.UI
 
         private void TopBarButton_MouseLeave(object sender, EventArgs e)
         {
-            ((Button)sender).BackColor = ThemeColor;
+            ((Button)sender).BackColor = Color.DeepSkyBlue;
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void ConsoleWindow_Load(object sender, EventArgs e)
-        {
-            ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
-        }
-
-        private void WriteUnsafety(string ctx)
-        {
-            richTextBox1.AppendText(ctx);
-            richTextBox1.SelectionStart = richTextBox1.TextLength;
-            richTextBox1.ScrollToCaret();
-        }
-
-        public void WriteLine(string line)
-        {
-            Write(line + Environment.NewLine);
-        }
-
-        public void Write(string ctx)
-        {
-            try
-            {
-                Invoke(new Action<string>(WriteUnsafety), ctx);
-            }
-            catch (Exception) { }
-        }
-
-        public DialogResult ShowDialogSafely()
-        {
-            Invoke(new Action(() => Visible = false));
-            return (DialogResult)Invoke(new Func<DialogResult>(ShowDialog));
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

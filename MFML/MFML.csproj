@@ -102,6 +102,9 @@
     <Compile Include="Game\MinecraftLoggingType.cs" />
     <Compile Include="Game\Rule.cs" />
     <Compile Include="Launch\MinecraftOfflineLaunchMaker.cs" />
+    <Compile Include="UI\BasicWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\ConsoleWindow.cs">
       <SubType>Form</SubType>
     </Compile>

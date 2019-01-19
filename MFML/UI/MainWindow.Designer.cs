@@ -35,13 +35,13 @@
             this.downloadGame = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.versionsBox = new MetroFramework.Controls.MetroComboBox();
+            this.playerNameBox = new MetroFramework.Controls.MetroTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.startMCButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.MinimizeButton = new System.Windows.Forms.Button();
-            this.versionsBox = new MetroFramework.Controls.MetroComboBox();
-            this.playerNameBox = new MetroFramework.Controls.MetroTextBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -138,6 +138,47 @@
             this.label1.Text = "游戏名：";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // versionsBox
+            // 
+            this.versionsBox.FormattingEnabled = true;
+            this.versionsBox.ItemHeight = 23;
+            this.versionsBox.Location = new System.Drawing.Point(73, 31);
+            this.versionsBox.Name = "versionsBox";
+            this.versionsBox.Size = new System.Drawing.Size(157, 29);
+            this.versionsBox.TabIndex = 5;
+            this.versionsBox.UseSelectable = true;
+            // 
+            // playerNameBox
+            // 
+            // 
+            // 
+            // 
+            this.playerNameBox.CustomButton.Image = null;
+            this.playerNameBox.CustomButton.Location = new System.Drawing.Point(138, 2);
+            this.playerNameBox.CustomButton.Name = "";
+            this.playerNameBox.CustomButton.Size = new System.Drawing.Size(17, 17);
+            this.playerNameBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.playerNameBox.CustomButton.TabIndex = 1;
+            this.playerNameBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.playerNameBox.CustomButton.UseSelectable = true;
+            this.playerNameBox.CustomButton.Visible = false;
+            this.playerNameBox.Lines = new string[0];
+            this.playerNameBox.Location = new System.Drawing.Point(73, 3);
+            this.playerNameBox.MaxLength = 32767;
+            this.playerNameBox.Name = "playerNameBox";
+            this.playerNameBox.PasswordChar = '\0';
+            this.playerNameBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.playerNameBox.SelectedText = "";
+            this.playerNameBox.SelectionLength = 0;
+            this.playerNameBox.SelectionStart = 0;
+            this.playerNameBox.ShortcutsEnabled = true;
+            this.playerNameBox.ShowClearButton = true;
+            this.playerNameBox.Size = new System.Drawing.Size(158, 22);
+            this.playerNameBox.TabIndex = 6;
+            this.playerNameBox.UseSelectable = true;
+            this.playerNameBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.playerNameBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
@@ -215,47 +256,6 @@
             this.MinimizeButton.Text = "-";
             this.MinimizeButton.UseVisualStyleBackColor = true;
             this.MinimizeButton.Click += new System.EventHandler(this.MinimizeButton_Click);
-            // 
-            // versionsBox
-            // 
-            this.versionsBox.FormattingEnabled = true;
-            this.versionsBox.ItemHeight = 23;
-            this.versionsBox.Location = new System.Drawing.Point(73, 31);
-            this.versionsBox.Name = "versionsBox";
-            this.versionsBox.Size = new System.Drawing.Size(157, 29);
-            this.versionsBox.TabIndex = 5;
-            this.versionsBox.UseSelectable = true;
-            // 
-            // playerNameBox
-            // 
-            // 
-            // 
-            // 
-            this.playerNameBox.CustomButton.Image = null;
-            this.playerNameBox.CustomButton.Location = new System.Drawing.Point(138, 2);
-            this.playerNameBox.CustomButton.Name = "";
-            this.playerNameBox.CustomButton.Size = new System.Drawing.Size(17, 17);
-            this.playerNameBox.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.playerNameBox.CustomButton.TabIndex = 1;
-            this.playerNameBox.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.playerNameBox.CustomButton.UseSelectable = true;
-            this.playerNameBox.CustomButton.Visible = false;
-            this.playerNameBox.Lines = new string[0];
-            this.playerNameBox.Location = new System.Drawing.Point(73, 3);
-            this.playerNameBox.MaxLength = 32767;
-            this.playerNameBox.Name = "playerNameBox";
-            this.playerNameBox.PasswordChar = '\0';
-            this.playerNameBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.playerNameBox.SelectedText = "";
-            this.playerNameBox.SelectionLength = 0;
-            this.playerNameBox.SelectionStart = 0;
-            this.playerNameBox.ShortcutsEnabled = true;
-            this.playerNameBox.ShowClearButton = true;
-            this.playerNameBox.Size = new System.Drawing.Size(158, 22);
-            this.playerNameBox.TabIndex = 6;
-            this.playerNameBox.UseSelectable = true;
-            this.playerNameBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.playerNameBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
             // MainWindow
             // 
