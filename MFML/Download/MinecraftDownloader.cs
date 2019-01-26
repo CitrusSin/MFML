@@ -8,12 +8,13 @@ using System.IO;
 using System.IO.Compression;
 using MFML.Core;
 using MFML.Game;
+using System.Diagnostics;
 
 namespace MFML.Download
 {
     public class MinecraftDownloader : Downloader
     {
-        public class MinecraftDownloadVersionInfo : DownloadItemInfo
+        private class MinecraftDownloadVersionInfo
         {
             public string Id { get; set; }
             public string Type { get; set; }
@@ -24,6 +25,8 @@ namespace MFML.Download
                 return string.Format("版本：{0} 状态：{1} 发布时间：{2}", Id, Type, ReleaseTime);
             }
         }
+
+        private List<MinecraftDownloadVersionInfo> versions;
 
         readonly string MinecraftVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
         readonly string MinecraftAssetsURL;
@@ -46,8 +49,10 @@ namespace MFML.Download
         public override void Download()
         {
             ServicePointManager.DefaultConnectionLimit = 1000;
-            var jsonURL = ((MinecraftDownloadVersionInfo)SelectedItem).Url;
-            var id = ((MinecraftDownloadVersionInfo)SelectedItem).Id;
+            var selitem = versions.Find((i) => i.ToString() == SelectedItem);
+            Debug.Assert(selitem != null);
+            var jsonURL = selitem.Url;
+            var id = selitem.Id;
             var MCVersion = new MinecraftVersion(id);
             Directory.CreateDirectory(MCVersion.VersionDirectory);
             MinecraftManifest info;
@@ -236,9 +241,10 @@ namespace MFML.Download
             }
         }
 
-        public override List<DownloadItemInfo> GetAllItemsToDownload()
+        public override List<string> GetAllItemsToDownload()
         {
-            List<DownloadItemInfo> l = new List<DownloadItemInfo>();
+            List<string> l = new List<string>();
+            versions = new List<MinecraftDownloadVersionInfo>();
             using (WebClient wc = new WebClient())
             {
                 var json = wc.DownloadString(MinecraftVersionManifestURL);
@@ -266,7 +272,8 @@ namespace MFML.Download
                         Url = url,
                         ReleaseTime = releaseTime
                     };
-                    l.Add(vi);
+                    versions.Add(vi);
+                    l.Add(vi.ToString());
                 }
             }
             return l;

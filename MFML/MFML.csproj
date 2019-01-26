@@ -89,7 +89,7 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Download\Downloader.cs" />
     <Compile Include="Download\DownloadProgress.cs" />
-    <Compile Include="Download\DownloadItemInfo.cs" />
+    <Compile Include="Download\OptifineDownloader.cs" />
     <Compile Include="Game\Argument.cs" />
     <Compile Include="Game\AssetIndex.cs" />
     <Compile Include="Game\DownloadInfo.cs" />
@@ -102,9 +102,6 @@
     <Compile Include="Game\MinecraftLoggingType.cs" />
     <Compile Include="Game\Rule.cs" />
     <Compile Include="Launch\MinecraftOfflineLaunchMaker.cs" />
-    <Compile Include="UI\BasicWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\ConsoleWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +138,7 @@
     <Compile Include="UI\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\EnumeratorUtils.cs" />
     <EmbeddedResource Include="UI\ConsoleWindow.resx">
       <DependentUpon>ConsoleWindow.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using MetroFramework;
 using MFML.Core;
 using MFML.Game;
 
@@ -9,7 +11,12 @@ namespace MFML.UI
 {
     public partial class MainWindow : Form
     {
-
+        private const int CS_DropSHADOW = 0x20000;
+        private const int GCL_STYLE = (-26);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SetClassLong(IntPtr hwnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetClassLong(IntPtr hwnd, int nIndex);
         private bool DragMouse;
         private Point MouseDragPoint;
         private Color ThemeColor1 = Color.DeepSkyBlue;
@@ -69,12 +76,13 @@ namespace MFML.UI
         {
             base.OnPaint(e);
             Graphics g = CreateGraphics();
-            float h = SystemFonts.CaptionFont.GetHeight();
+            Font UsedFont = MetroFonts.Label(MetroLabelSize.Medium, MetroLabelWeight.Regular);
+            float h = UsedFont.GetHeight();
             RectangleF textRect = new RectangleF(10, 15 - (h / 2), Width - 60, 15 + (h / 2));
             Brush b = new SolidBrush(ThemeColor);
             g.FillRectangle(b, textRect);
             b.Dispose();
-            g.DrawString(Text, SystemFonts.CaptionFont, Brushes.White, textRect);
+            g.DrawString(Text, UsedFont, Brushes.White, textRect);
             g.DrawLine(Pens.Black, 0, 0, Width - 1, 0);                  // Draw black border
             g.DrawLine(Pens.Black, Width - 1, 0, Width - 1, Height - 1);
             g.DrawLine(Pens.Black, Width - 1, Height - 1, 0, Height - 1);
@@ -117,6 +125,7 @@ namespace MFML.UI
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            SetClassLong(this.Handle, GCL_STYLE, GetClassLong(this.Handle, GCL_STYLE) | CS_DropSHADOW);
             Instance.FormInitalization(this);
             ThemeColor = Instance.Settings.ThemeColor;
             playerNameBox.Text = Instance.Settings.PlayerName;

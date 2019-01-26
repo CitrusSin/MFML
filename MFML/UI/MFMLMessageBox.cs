@@ -1,10 +1,12 @@
-﻿using MFML.Core;
+﻿using MetroFramework;
+using MFML.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +16,13 @@ namespace MFML.UI
     public partial class MFMLMessageBox : Form
     {
         private List<Button> buttons = new List<Button>();
+
+        private const int CS_DropSHADOW = 0x20000;
+        private const int GCL_STYLE = (-26);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SetClassLong(IntPtr hwnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetClassLong(IntPtr hwnd, int nIndex);
 
         private readonly string title;
         private readonly string text;
@@ -78,12 +87,13 @@ namespace MFML.UI
         {
             base.OnPaint(e);
             Graphics g = CreateGraphics();
-            float h = SystemFonts.CaptionFont.GetHeight();
+            Font UsedFont = MetroFonts.Label(MetroLabelSize.Medium, MetroLabelWeight.Regular);
+            float h = UsedFont.GetHeight();
             RectangleF textRect = new RectangleF(10, 15 - (h / 2), Width - 60, 15 + (h / 2));
             Brush b = new SolidBrush(ThemeColor);
             g.FillRectangle(b, textRect);
             b.Dispose();
-            g.DrawString(Text, SystemFonts.CaptionFont, Brushes.White, textRect);
+            g.DrawString(Text, UsedFont, Brushes.White, textRect);
             g.DrawLine(Pens.Black, 0, 0, Width - 1, 0);                  // Draw black border
             g.DrawLine(Pens.Black, Width - 1, 0, Width - 1, Height - 1);
             g.DrawLine(Pens.Black, Width - 1, Height - 1, 0, Height - 1);
@@ -174,6 +184,7 @@ namespace MFML.UI
             var button = new Button();
             button.BackColor = ThemeColor;
             button.FlatStyle = FlatStyle.Flat;
+            button.Font = MetroFonts.Button(MetroButtonSize.Medium, MetroButtonWeight.Regular);
             button.Name = name;
             button.Size = new Size(75, 28);
             button.TabIndex = 0;
@@ -202,6 +213,7 @@ namespace MFML.UI
 
         private void MFMLMessageBox_Load(object sender, EventArgs e)
         {
+            SetClassLong(this.Handle, GCL_STYLE, GetClassLong(this.Handle, GCL_STYLE) | CS_DropSHADOW);
             Initialization(this.title, this.text, this.types);
         }
     }

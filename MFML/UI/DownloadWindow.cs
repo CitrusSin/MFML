@@ -5,13 +5,21 @@ using System.Drawing;
 using System.Windows.Forms;
 using MFML.Download;
 using MFML.Core;
+using System.Runtime.InteropServices;
+using MetroFramework;
 
 namespace MFML.UI
 {
     public partial class DownloadWindow : Form
     {
+        private const int CS_DropSHADOW = 0x20000;
+        private const int GCL_STYLE = (-26);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SetClassLong(IntPtr hwnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetClassLong(IntPtr hwnd, int nIndex);
         Downloader Provider;
-        List<DownloadItemInfo> Items;
+        List<string> Items;
 
         public DownloadWindow(Downloader Provider)
         {
@@ -68,12 +76,13 @@ namespace MFML.UI
         {
             base.OnPaint(e);
             Graphics g = CreateGraphics();
-            float h = SystemFonts.CaptionFont.GetHeight();
+            Font UsedFont = MetroFonts.Label(MetroLabelSize.Medium, MetroLabelWeight.Regular);
+            float h = UsedFont.GetHeight();
             RectangleF textRect = new RectangleF(10, 15 - (h / 2), Width - 60, 15 + (h / 2));
             Brush b = new SolidBrush(ThemeColor);
             g.FillRectangle(b, textRect);
             b.Dispose();
-            g.DrawString(Text, SystemFonts.CaptionFont, Brushes.White, textRect);
+            g.DrawString(Text, UsedFont, Brushes.White, textRect);
             g.DrawLine(Pens.Black, 0, 0, Width - 1, 0);                  // Draw black border
             g.DrawLine(Pens.Black, Width - 1, 0, Width - 1, Height - 1);
             g.DrawLine(Pens.Black, Width - 1, Height - 1, 0, Height - 1);
@@ -103,6 +112,7 @@ namespace MFML.UI
 
         private void DownloadWindow_Load(object sender, EventArgs e)
         {
+            SetClassLong(this.Handle, GCL_STYLE, GetClassLong(this.Handle, GCL_STYLE) | CS_DropSHADOW);
             Provider.OnProgressChanged += (a, b) => Invoke(new Action<string, int>(SetProgress), a, b);
             ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
             listBox1.Enabled = false;
@@ -127,7 +137,7 @@ namespace MFML.UI
             }
             else
             {
-                Provider.SelectedItem = e.Argument as DownloadItemInfo;
+                Provider.SelectedItem = e.Argument as string;
                 Provider.Download();
                 e.Result = 1;
             }

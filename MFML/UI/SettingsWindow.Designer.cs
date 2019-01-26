@@ -39,14 +39,6 @@
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.mcFolderBox = new MetroFramework.Controls.MetroTextBox();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
-            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
-            this.debugBox = new MetroFramework.Controls.MetroToggle();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
-            this.BMCLAPIBox = new MetroFramework.Controls.MetroToggle();
             this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -55,19 +47,30 @@
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.memoryBox = new MetroFramework.Controls.MetroTextBox();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
+            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.debugBox = new MetroFramework.Controls.MetroToggle();
+            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.BMCLAPIBox = new MetroFramework.Controls.MetroToggle();
+            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
             this.panel1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.metroTabPage2.SuspendLayout();
-            this.metroTabPage3.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
+            this.metroTabPage3.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            this.flowLayoutPanel9.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // CloseButton
@@ -121,7 +124,7 @@
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(0, 0);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 1;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(750, 470);
             this.metroTabControl1.Style = MetroFramework.MetroColorStyle.Blue;
             this.metroTabControl1.TabIndex = 0;
@@ -205,6 +208,7 @@
             this.mcFolderBox.UseSelectable = true;
             this.mcFolderBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.mcFolderBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.mcFolderBox.Leave += new System.EventHandler(this.mcFolderBox_Leave);
             // 
             // metroTabPage2
             // 
@@ -220,97 +224,6 @@
             this.metroTabPage2.VerticalScrollbarBarColor = true;
             this.metroTabPage2.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.VerticalScrollbarSize = 10;
-            // 
-            // metroTabPage3
-            // 
-            this.metroTabPage3.Controls.Add(this.flowLayoutPanel3);
-            this.metroTabPage3.HorizontalScrollbarBarColor = true;
-            this.metroTabPage3.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroTabPage3.HorizontalScrollbarSize = 10;
-            this.metroTabPage3.Location = new System.Drawing.Point(4, 38);
-            this.metroTabPage3.Name = "metroTabPage3";
-            this.metroTabPage3.Size = new System.Drawing.Size(742, 428);
-            this.metroTabPage3.TabIndex = 2;
-            this.metroTabPage3.Text = "启动器设置";
-            this.metroTabPage3.VerticalScrollbarBarColor = true;
-            this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
-            this.metroTabPage3.VerticalScrollbarSize = 10;
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(742, 428);
-            this.flowLayoutPanel3.TabIndex = 3;
-            // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.Controls.Add(this.metroLabel2);
-            this.flowLayoutPanel4.Controls.Add(this.debugBox);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(736, 32);
-            this.flowLayoutPanel4.TabIndex = 0;
-            // 
-            // metroLabel2
-            // 
-            this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel2.Location = new System.Drawing.Point(3, 3);
-            this.metroLabel2.Margin = new System.Windows.Forms.Padding(3);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(210, 25);
-            this.metroLabel2.TabIndex = 0;
-            this.metroLabel2.Text = "启动游戏后打开调试窗口";
-            // 
-            // debugBox
-            // 
-            this.debugBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.debugBox.Location = new System.Drawing.Point(219, 3);
-            this.debugBox.Name = "debugBox";
-            this.debugBox.Size = new System.Drawing.Size(90, 25);
-            this.debugBox.TabIndex = 1;
-            this.debugBox.Text = "Off";
-            this.debugBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.debugBox.UseSelectable = true;
-            // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.Controls.Add(this.metroLabel3);
-            this.flowLayoutPanel5.Controls.Add(this.BMCLAPIBox);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 41);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(736, 32);
-            this.flowLayoutPanel5.TabIndex = 1;
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel3.Location = new System.Drawing.Point(3, 3);
-            this.metroLabel3.Margin = new System.Windows.Forms.Padding(3);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(370, 25);
-            this.metroLabel3.TabIndex = 0;
-            this.metroLabel3.Text = "使用BMCLAPI加速下载游戏文件（国内推荐）";
-            // 
-            // BMCLAPIBox
-            // 
-            this.BMCLAPIBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BMCLAPIBox.Location = new System.Drawing.Point(379, 3);
-            this.BMCLAPIBox.Name = "BMCLAPIBox";
-            this.BMCLAPIBox.Size = new System.Drawing.Size(90, 25);
-            this.BMCLAPIBox.TabIndex = 1;
-            this.BMCLAPIBox.Text = "Off";
-            this.BMCLAPIBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.BMCLAPIBox.UseSelectable = true;
             // 
             // flowLayoutPanel6
             // 
@@ -376,6 +289,7 @@
             this.javaPathBox.UseSelectable = true;
             this.javaPathBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.javaPathBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.javaPathBox.Leave += new System.EventHandler(this.javaPathBox_Leave);
             // 
             // flowLayoutPanel8
             // 
@@ -430,6 +344,7 @@
             this.memoryBox.UseSelectable = true;
             this.memoryBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.memoryBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.memoryBox.Leave += new System.EventHandler(this.memoryBox_Leave);
             // 
             // metroLabel6
             // 
@@ -442,6 +357,124 @@
             this.metroLabel6.Size = new System.Drawing.Size(37, 25);
             this.metroLabel6.TabIndex = 2;
             this.metroLabel6.Text = "MB";
+            // 
+            // metroTabPage3
+            // 
+            this.metroTabPage3.Controls.Add(this.flowLayoutPanel3);
+            this.metroTabPage3.HorizontalScrollbarBarColor = true;
+            this.metroTabPage3.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage3.HorizontalScrollbarSize = 10;
+            this.metroTabPage3.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage3.Name = "metroTabPage3";
+            this.metroTabPage3.Size = new System.Drawing.Size(742, 428);
+            this.metroTabPage3.TabIndex = 2;
+            this.metroTabPage3.Text = "启动器设置";
+            this.metroTabPage3.VerticalScrollbarBarColor = true;
+            this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage3.VerticalScrollbarSize = 10;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel9);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(742, 428);
+            this.flowLayoutPanel3.TabIndex = 3;
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.metroLabel2);
+            this.flowLayoutPanel4.Controls.Add(this.debugBox);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(736, 32);
+            this.flowLayoutPanel4.TabIndex = 0;
+            // 
+            // metroLabel2
+            // 
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabel2.Location = new System.Drawing.Point(3, 3);
+            this.metroLabel2.Margin = new System.Windows.Forms.Padding(3);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(210, 25);
+            this.metroLabel2.TabIndex = 0;
+            this.metroLabel2.Text = "启动游戏后打开调试窗口";
+            // 
+            // debugBox
+            // 
+            this.debugBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugBox.Location = new System.Drawing.Point(219, 3);
+            this.debugBox.Name = "debugBox";
+            this.debugBox.Size = new System.Drawing.Size(90, 25);
+            this.debugBox.TabIndex = 1;
+            this.debugBox.Text = "Off";
+            this.debugBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.debugBox.UseSelectable = true;
+            this.debugBox.CheckedChanged += new System.EventHandler(this.debugBox_CheckedChanged);
+            // 
+            // flowLayoutPanel9
+            // 
+            this.flowLayoutPanel9.Controls.Add(this.flowLayoutPanel5);
+            this.flowLayoutPanel9.Controls.Add(this.metroLabel7);
+            this.flowLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(0, 38);
+            this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(742, 161);
+            this.flowLayoutPanel9.TabIndex = 2;
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.metroLabel3);
+            this.flowLayoutPanel5.Controls.Add(this.BMCLAPIBox);
+            this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(736, 36);
+            this.flowLayoutPanel5.TabIndex = 2;
+            // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabel3.Location = new System.Drawing.Point(3, 3);
+            this.metroLabel3.Margin = new System.Windows.Forms.Padding(3);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(370, 25);
+            this.metroLabel3.TabIndex = 0;
+            this.metroLabel3.Text = "使用BMCLAPI加速下载游戏文件（国内推荐）";
+            // 
+            // BMCLAPIBox
+            // 
+            this.BMCLAPIBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BMCLAPIBox.Location = new System.Drawing.Point(379, 3);
+            this.BMCLAPIBox.Name = "BMCLAPIBox";
+            this.BMCLAPIBox.Size = new System.Drawing.Size(90, 25);
+            this.BMCLAPIBox.TabIndex = 1;
+            this.BMCLAPIBox.Text = "Off";
+            this.BMCLAPIBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.BMCLAPIBox.UseSelectable = true;
+            this.BMCLAPIBox.CheckedChanged += new System.EventHandler(this.BMCLAPIBox_CheckedChanged);
+            // 
+            // metroLabel7
+            // 
+            this.metroLabel7.AutoSize = true;
+            this.metroLabel7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.metroLabel7.Location = new System.Drawing.Point(3, 42);
+            this.metroLabel7.Name = "metroLabel7";
+            this.metroLabel7.Size = new System.Drawing.Size(691, 114);
+            this.metroLabel7.TabIndex = 3;
+            this.metroLabel7.Text = "BMCLAPI协议：\r\n1.BMCLAPI下的所有文件，除BMCLAPI本身的源码之外，归源站点所有\r\n2.BMCLAPI会尽量保证文件的完整性、有效性和实时性，" +
+    "对于使用BMCLAPI带来的一切纠纷，与BMCLAPI无关。\r\n3.BMCLAPI和BMCL不同，属于非开源项目\r\n4.所有使用BMCLAPI的程序必需在下载界" +
+    "面或其他可视部分标明来源\r\n5.禁止在BMCLAPI上二次封装其他协议";
             // 
             // SettingsWindow
             // 
@@ -464,17 +497,19 @@
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.metroTabPage2.ResumeLayout(false);
-            this.metroTabPage3.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
             this.flowLayoutPanel6.ResumeLayout(false);
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
             this.flowLayoutPanel8.ResumeLayout(false);
             this.flowLayoutPanel8.PerformLayout();
+            this.metroTabPage3.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            this.flowLayoutPanel9.ResumeLayout(false);
+            this.flowLayoutPanel9.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -496,9 +531,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroToggle debugBox;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
-        private MetroFramework.Controls.MetroLabel metroLabel3;
-        private MetroFramework.Controls.MetroToggle BMCLAPIBox;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private MetroFramework.Controls.MetroLabel metroLabel4;
@@ -507,5 +539,10 @@
         private MetroFramework.Controls.MetroLabel metroLabel5;
         private MetroFramework.Controls.MetroTextBox memoryBox;
         private MetroFramework.Controls.MetroLabel metroLabel6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private MetroFramework.Controls.MetroLabel metroLabel3;
+        private MetroFramework.Controls.MetroToggle BMCLAPIBox;
+        private MetroFramework.Controls.MetroLabel metroLabel7;
     }
 }

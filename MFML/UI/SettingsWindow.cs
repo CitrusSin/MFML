@@ -1,4 +1,5 @@
-﻿using MFML.Core;
+﻿using MetroFramework;
+using MFML.Core;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -64,12 +65,13 @@ namespace MFML.UI
         {
             base.OnPaint(e);
             Graphics g = CreateGraphics();
-            float h = SystemFonts.CaptionFont.GetHeight();
+            Font UsedFont = MetroFonts.Label(MetroLabelSize.Medium, MetroLabelWeight.Regular);
+            float h = UsedFont.GetHeight();
             RectangleF textRect = new RectangleF(10, 15 - (h / 2), Width - 60, 15 + (h / 2));
             Brush b = new SolidBrush(ThemeColor);
             g.FillRectangle(b, textRect);
             b.Dispose();
-            g.DrawString(Text, SystemFonts.CaptionFont, Brushes.White, textRect);
+            g.DrawString(Text, UsedFont, Brushes.White, textRect);
             g.DrawLine(Pens.Black, 0, 0, Width - 1, 0);                  // Draw black border
             g.DrawLine(Pens.Black, Width - 1, 0, Width - 1, Height - 1);
             g.DrawLine(Pens.Black, Width - 1, Height - 1, 0, Height - 1);
