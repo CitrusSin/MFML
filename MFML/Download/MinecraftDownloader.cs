@@ -1,14 +1,14 @@
-﻿using System;
+﻿using MFML.Core;
+using MFML.Game;
+using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Web.Script.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using MFML.Core;
-using MFML.Game;
-using System.Diagnostics;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web.Script.Serialization;
 
 namespace MFML.Download
 {
