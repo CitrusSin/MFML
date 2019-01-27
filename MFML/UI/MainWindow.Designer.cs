@@ -193,6 +193,7 @@
             this.playerNameBox.UseSelectable = true;
             this.playerNameBox.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.playerNameBox.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.playerNameBox.Leave += new System.EventHandler(this.playerNameBox_Leave);
             // 
             // tableLayoutPanel3
             // 

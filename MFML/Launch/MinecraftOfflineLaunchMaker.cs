@@ -1,4 +1,5 @@
 ﻿using System;
+using MFML.Core;
 using MFML.Game;
 using MFML.UI;
 
@@ -10,8 +11,8 @@ namespace MFML.Launch
         {
         }
 
-        public override string UUID => Guid.NewGuid().ToString("N");
+        public override string UUID => LauncherMain.Instance.Settings.OfflineUUID;
 
-        public override string AccessToken => Guid.NewGuid().ToString("N");
+        public override string AccessToken => LauncherMain.Instance.Settings.OfflineUUID;
     }
 }

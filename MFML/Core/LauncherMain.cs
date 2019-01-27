@@ -14,7 +14,7 @@ namespace MFML.Core
 {
     public class LauncherMain
     {
-        const string SETTINGS_FILE_NAME = "settings.xml";
+        const string SETTINGS_FILE_NAME = "MFMLSettings.xml";
 
         public static LauncherMain Instance { get; private set; }
         public const string LAUNCHER_NAME = "Micrafast's Minecraft Launcher";

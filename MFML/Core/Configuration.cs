@@ -57,6 +57,12 @@ namespace MFML.Core
             set { SetSetting("javapath", value); }
         }
 
+        public string OfflineUUID
+        {
+            get { return GetSettingByName("offlineuuid"); }
+            set { SetSetting("offlineuuid", value); }
+        }
+
         public int MaxMemory
         {
             get { return int.Parse(GetSettingByName("maxmemory")); }
@@ -147,6 +153,10 @@ namespace MFML.Core
             var debug = configDoc.CreateElement("debug");
             debug.InnerText = "false";
             settings.AppendChild(debug);
+            // Offline UUID
+            var offlineUUID = configDoc.CreateElement("offlineuuid");
+            offlineUUID.InnerText = Guid.NewGuid().ToString("N");
+            settings.AppendChild(offlineUUID);
             // Save all settings initalized
             configDoc.Save(this.filename);
         }
