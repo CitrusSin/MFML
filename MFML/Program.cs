@@ -15,10 +15,15 @@ namespace MFML
         [STAThread]
         static void Main()
         {
-            LauncherMain Instance = LauncherMain.CreateInstance();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow(Instance));
+            try
+            {
+                LauncherMain Instance = LauncherMain.CreateInstance();
+                Instance.RunLauncher();
+            }
+            catch (Exception e)
+            {
+                MFMLExceptionShowBox.ShowExceptionBox(e);
+            }
         }
     }
 }

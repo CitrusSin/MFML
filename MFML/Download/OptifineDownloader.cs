@@ -1,5 +1,6 @@
 ﻿using MFML.Core;
 using MFML.Game;
+using MFML.Game.BMCLAPI;
 using MFML.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace MFML.Download
 {
@@ -17,15 +19,14 @@ namespace MFML.Download
         {
             public string Name { get; set; }
             public string Url { get; set; }
-            public string ReleaseTime { get; set; }
             public override string ToString()
             {
-                return string.Format("版本：{0} 发布时间：{1}", Name, ReleaseTime);
+                return string.Format("版本：{0}", Name);
             }
         }
 
         const string OPTIFINE_OFFICAL_DOWNLOADS = "https://www.optifine.net/downloads";
-        const string BMCLAPI_OPTIFINE_LIST = "https://bmclapi2.bangbang93.com/optifine/versionList";
+        const string BMCLAPI_OPTIFINE_LIST_FORMAT = "https://bmclapi2.bangbang93.com/optifine/{0}";
 
         readonly MinecraftVersion Version;
 
@@ -54,15 +55,32 @@ namespace MFML.Download
             {
                 if (UseBMCL)
                 {
-                    
+                    var jsonurl = string.Format(BMCLAPI_OPTIFINE_LIST_FORMAT, id);
+                    var seri = new JavaScriptSerializer();
+                    var itemList = seri.Deserialize<List<BMCLOptifineDownloadItem>>(
+                        wc.DownloadString(jsonurl)
+                        );
+                    foreach (var item in itemList)
+                    {
+                        var listItem = new OptifineDownloadVersionInfo();
+                        listItem.Name = item.type;
+                        listItem.Url = string.Format(
+                            "https://bmclapi2.bangbang93.com/optifine/{0}/{1}/{2}",
+                            item.mcversion,
+                            item.type,
+                            item.patch
+                            );
+                        downloadVersionInfos.Add(listItem);
+                        list.Add(listItem.ToString());
+                    }
                 }
                 else
                 {
                     var downloads = wc.DownloadString(OPTIFINE_OFFICAL_DOWNLOADS);
                     Match main = Regex.Match(
                         downloads,
-                        string.Format("<h2>Minecraft {0}</h2>\n?(.*?)\n?</table>", id),
-                        RegexOptions.IgnoreCase
+                        string.Format("<h2>Minecraft {0}</h2>\\s*\r?\n?\\s*(.*?)\\s*\r?\n?\\s*</table>", id),
+                        RegexOptions.Multiline
                         );
                     MatchCollection matches = Regex.Matches(
                         main.Value,
@@ -80,7 +98,6 @@ namespace MFML.Download
                             );
                         var name = groups[1];
                         var mirror = groups[2];
-                        var release = groups[3];
                         var jar = EnumeratorUtils.MakeListFromEnumerator(
                             (IEnumerator<string>)Regex.Match(
                                 mirror,
@@ -94,7 +111,6 @@ namespace MFML.Download
                         var info = new OptifineDownloadVersionInfo();
                         info.Name = name;
                         info.Url = url;
-                        info.ReleaseTime = release;
                         downloadVersionInfos.Add(info);
                         list.Add(info.ToString());
                     }

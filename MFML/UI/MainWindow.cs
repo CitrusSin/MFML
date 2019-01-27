@@ -185,5 +185,18 @@ namespace MFML.UI
                 MFMLMessageBox.ShowMessageBox(this, "错误", "请先设置账户或游戏名！", MessageBoxButtons.OK);
             }
         }
+
+        private void optifineButton_Click(object sender, EventArgs e)
+        {
+            if (versionsBox.SelectedItem != null)
+            {
+                Instance.ShowDownloadOptifineList(versionsBox.SelectedItem as MinecraftVersion);
+            }
+            else
+            {
+                MFMLMessageBox.ShowMessageBox(this, "错误", "安装Optifine需要选定一个游戏版本！\r\n" +
+                    "如果你暂时没有任何游戏版本可供下载，请点击\"添加版本\"来下载一个。", MessageBoxButtons.OK);
+            }
+        }
     }
 }

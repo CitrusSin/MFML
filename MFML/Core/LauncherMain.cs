@@ -41,8 +41,15 @@ namespace MFML.Core
         private LauncherMain()
         {
             Instance = this;
+        }
+
+        public void RunLauncher()
+        {
             Settings = new Configuration(SETTINGS_FILE_NAME);
             checkMinecraft();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainWindow(this));
         }
 
         public void FormInitalization(MainWindow launcherWindow)
@@ -107,6 +114,15 @@ namespace MFML.Core
         {
             Settings.Save();
             var downloader = new MinecraftDownloader(Settings.UseBMCL, Settings.MinecraftFolderName);
+            var downloadDialog = new DownloadWindow(downloader);
+            downloadDialog.ShowDialog(MainForm);
+            downloadDialog.Dispose();
+        }
+
+        public void ShowDownloadOptifineList(MinecraftVersion version)
+        {
+            Settings.Save();
+            var downloader = new OptifineDownloader(version);
             var downloadDialog = new DownloadWindow(downloader);
             downloadDialog.ShowDialog(MainForm);
             downloadDialog.Dispose();

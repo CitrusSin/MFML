@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.optifineButton = new System.Windows.Forms.Button();
             this.downloadGame = new System.Windows.Forms.Button();
             this.label2 = new MetroFramework.Controls.MetroLabel();
             this.label1 = new MetroFramework.Controls.MetroLabel();
@@ -83,7 +83,7 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.34188F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.65812F));
-            this.tableLayoutPanel2.Controls.Add(this.button1, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.optifineButton, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.downloadGame, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
@@ -102,19 +102,20 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(234, 414);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // button1
+            // optifineButton
             // 
-            this.button1.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.tableLayoutPanel2.SetColumnSpan(this.button1, 2);
-            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(3, 377);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(228, 34);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "为当前版本安装Optifine";
-            this.button1.UseVisualStyleBackColor = false;
+            this.optifineButton.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.tableLayoutPanel2.SetColumnSpan(this.optifineButton, 2);
+            this.optifineButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.optifineButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.optifineButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.optifineButton.Location = new System.Drawing.Point(3, 377);
+            this.optifineButton.Name = "optifineButton";
+            this.optifineButton.Size = new System.Drawing.Size(228, 34);
+            this.optifineButton.TabIndex = 7;
+            this.optifineButton.Text = "为当前版本安装Optifine";
+            this.optifineButton.UseVisualStyleBackColor = false;
+            this.optifineButton.Click += new System.EventHandler(this.optifineButton_Click);
             // 
             // downloadGame
             // 
@@ -311,7 +312,7 @@
         private System.Windows.Forms.Button startMCButton;
         private MetroFramework.Controls.MetroComboBox versionsBox;
         private MetroFramework.Controls.MetroTextBox playerNameBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button optifineButton;
     }
 }
 
