@@ -4,10 +4,13 @@ using MFML.Game.BMCLAPI;
 using MFML.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
@@ -17,11 +20,13 @@ namespace MFML.Download
     {
         private class OptifineDownloadVersionInfo
         {
-            public string Name { get; set; }
+            public string MCVersion { get; set; }
+            public string Type { get; set; }
+            public string Patch { get; set; }
             public string Url { get; set; }
             public override string ToString()
             {
-                return string.Format("版本：{0}", Name);
+                return string.Format("Optifine {0} {1} {2}", MCVersion, Type.Replace('_', ' '), Patch);
             }
         }
 
@@ -41,7 +46,53 @@ namespace MFML.Download
 
         public override void Download()
         {
-            throw new NotImplementedException();
+            ServicePointManager.DefaultConnectionLimit = 1000;
+            Version.InstallLaunchWrapper();
+            var item = downloadVersionInfos.Find((i) => i.ToString() == this.SelectedItem);
+            Debug.Assert(item != null);
+            var url = item.Url;
+            var versionText = string.Format("{0}_{1}_{2}", item.MCVersion, item.Type, item.Patch);
+            var jarname = "Optifine-" + versionText + ".jar";
+            var dirpath = "optifine\\Optifine\\" + versionText + "\\";
+            var downloadDirPath = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + dirpath;
+            if (!Directory.Exists(downloadDirPath))
+            {
+                Directory.CreateDirectory(downloadDirPath);
+            }
+            var path = dirpath + jarname;
+            var downloadPath = downloadDirPath + jarname;
+            var manifest = MinecraftManifest.AnalyzeFromVersion(this.Version);
+            using (var wc = new WebClient())
+            {
+                OnProgressChanged("开始下载。。", 0);
+                wc.DownloadProgressChanged +=
+                    (sender, args) => OnProgressChanged(null, (int)(args.ProgressPercentage * 0.8));
+                Task downloadTask = wc.DownloadFileTaskAsync(url, downloadPath);
+                while (!downloadTask.IsCompleted)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+            OnProgressChanged("正在添加依赖项。。。", 80);
+            var library = new MinecraftLibrary();
+            library.name = dirpath.Substring(0, dirpath.Length - 1).Replace('\\', ':');
+            library.downloads = new LibraryDownloads();
+            library.downloads.artifact = new DownloadInfo();
+            library.downloads.artifact.path = path.Replace('\\', '/');
+            library.downloads.artifact.url = url;
+            manifest.libraries.Add(library);
+            if (manifest.minecraftArguments == null)
+            {
+                manifest.arguments.game.Add("--tweakClass");
+                manifest.arguments.game.Add("optifine.OptiFineTweaker");
+            }
+            else
+            {
+                manifest.minecraftArguments += " --tweakClass optifine.OptiFineTweaker";
+            }
+            
+            OnProgressChanged(null, 100);
+            Version.SaveManifest(manifest);
         }
 
         public override List<string> GetAllItemsToDownload()
@@ -63,7 +114,9 @@ namespace MFML.Download
                     foreach (var item in itemList)
                     {
                         var listItem = new OptifineDownloadVersionInfo();
-                        listItem.Name = item.type;
+                        listItem.MCVersion = item.mcversion;
+                        listItem.Type = item.type;
+                        listItem.Patch = item.patch;
                         listItem.Url = string.Format(
                             "https://bmclapi2.bangbang93.com/optifine/{0}/{1}/{2}",
                             item.mcversion,
@@ -109,7 +162,10 @@ namespace MFML.Download
                         uri = uri.Substring(0, uri.Length - 1);
                         var url = "https://optifine.net/" + uri;
                         var info = new OptifineDownloadVersionInfo();
-                        info.Name = name;
+                        var args = name.Split(' ');
+                        var mcversion = args[1];
+                        var type = args[2] + "_" + args[3];
+                        var patch = args[4];
                         info.Url = url;
                         downloadVersionInfos.Add(info);
                         list.Add(info.ToString());

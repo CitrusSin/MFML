@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
@@ -224,7 +225,7 @@ namespace MFML.Launch
             {
                 cd += "\\";
             }
-            var pathes = new List<string>();
+            var pathes = new StringBuilder();
             var libraries = manifest.libraries;
             foreach (var lib in libraries)
             {
@@ -243,16 +244,23 @@ namespace MFML.Launch
                 }
                 if (NeedThisLib)
                 {
-                    if (lib.downloads.artifact != null)
+                    if (lib != null)
                     {
-                        var artifact = lib.downloads.artifact;
-                        var path = cd + LibRoot + artifact.path.Replace('/', '\\');
-                        pathes.Add(path);
+                        var names = lib.name.Split(':');
+                        var ids = names.Skip(1);
+                        var packages = names[0].Split('.');
+                        List<string> dirs = new List<string>();
+                        dirs.AddRange(packages);
+                        dirs.AddRange(ids);
+                        dirs.Add(string.Join("-", ids) + ".jar");
+                        var path = cd + LibRoot + string.Join("\\", dirs);
+                        pathes.Append(path);
+                        pathes.Append(';');
                     }
                 }
             }
-            pathes.Add(cd + Version.JarPath);
-            return string.Join(";", pathes);
+            pathes.Append(cd + Version.JarPath);
+            return pathes.ToString();
         }
 
         private string ProcessArgument(string str)
