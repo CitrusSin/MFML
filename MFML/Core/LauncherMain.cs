@@ -18,7 +18,7 @@ namespace MFML.Core
 
         public static LauncherMain Instance { get; private set; }
         public const string LAUNCHER_NAME = "Micrafast's Minecraft Launcher";
-        public const string LAUNCHER_VERSION = "b0.1.0001";
+        public const string LAUNCHER_VERSION = "b0.1.0002";
 
         public Configuration Settings { get; private set; }
         public List<MinecraftVersion> MinecraftVersions { get; private set; }
