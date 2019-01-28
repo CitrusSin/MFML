@@ -79,16 +79,15 @@ namespace MFML.Download
                     var downloads = wc.DownloadString(OPTIFINE_OFFICAL_DOWNLOADS);
                     Match main = Regex.Match(
                         downloads,
-                        string.Format("<h2>Minecraft {0}</h2>\\s*\r?\n?\\s*(.*?)\\s*\r?\n?\\s*</table>", id),
-                        RegexOptions.Multiline
+                        string.Format("<h2>Minecraft {0}</h2>((.|\n)*?)</table>", id.Replace(".", "\\."))
                         );
                     MatchCollection matches = Regex.Matches(
                         main.Value,
-                        "<tr class='downloadLine.*?'>\n?" +
-                        "<td class='downloadLineFile.*?'>(.*?)</td>\n?" +
-                        "<td class='downloadLineDownload.*?'><a href =\".*?\">Download</a></td>\n?" +
-                        "<td class='downloadLineMirror'><a href =\"(.*?)\">.*?</a></td>\n?" +
-                        "<td class='downloadLineChangelog'><a href='.*?'>changelog</a></td>\n?" +
+                        "<tr class='downloadLine.*?'>\n" +
+                        "<td class='downloadLineFile.*?'>(.*?)</td>\n" +
+                        "<td class='downloadLineDownload.*?'><a href =.*?>.*?</a></td>\n" +
+                        "<td class='downloadLineMirror'><a href =\"(.*?)\">.*?</a></td>\n" +
+                        "<td class='downloadLineChangelog'><a href=.*?>.*?</a></td>\n" +
                         "<td class='downloadLineDate'>(.*?)</td>"
                         );
                     foreach (Match match in matches)
