@@ -19,7 +19,7 @@ namespace MFML.UI
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int GetClassLong(IntPtr hwnd, int nIndex);
         Downloader Provider;
-        List<string> Items;
+        List<DownloadItem> Items;
 
         public DownloadWindow(Downloader Provider)
         {
@@ -113,7 +113,6 @@ namespace MFML.UI
         private void DownloadWindow_Load(object sender, EventArgs e)
         {
             SetClassLong(this.Handle, GCL_STYLE, GetClassLong(this.Handle, GCL_STYLE) | CS_DropSHADOW);
-            Provider.OnProgressChanged += (a, b) => Invoke(new Action<string, int>(SetProgress), a, b);
             ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
             listBox1.Enabled = false;
             CloseButton.Enabled = false;
@@ -137,8 +136,13 @@ namespace MFML.UI
             }
             else
             {
-                Provider.SelectedItem = e.Argument as string;
-                Provider.Download();
+                var item = e.Argument as DownloadItem;
+                if (item == null)
+                {
+                    throw new ArgumentException("Background worker's argument must be a DownloadItem");
+                }
+                item.OnProgressChanged += (a, b) => this.Invoke(new Action(() => SetProgress(a, b)));
+                item.Download();
                 e.Result = 1;
             }
         }

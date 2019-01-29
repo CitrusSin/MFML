@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,21 @@ namespace MFML.Utils
         {
             List<T> list = new List<T>();
             enumer.Reset();
-            enumer.MoveNext();
-            while (enumer.Current != null)
+            while (enumer.MoveNext())
             {
                 list.Add(enumer.Current);
-                enumer.MoveNext();
+            }
+            enumer.Reset();
+            return list;
+        }
+
+        public static List<object> MakeListFromEnumerator(IEnumerator enumer)
+        {
+            List<object> list = new List<object>();
+            enumer.Reset();
+            while (enumer.MoveNext())
+            {
+                list.Add(enumer.Current);
             }
             enumer.Reset();
             return list;

@@ -2,13 +2,9 @@
 using MFML.Game;
 using MFML.Game.BMCLAPI;
 using MFML.Utils;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,42 +12,31 @@ using System.Web.Script.Serialization;
 
 namespace MFML.Download
 {
-    public class OptifineDownloader : Downloader
+    public class OptifineDownloadItem : DownloadItem
     {
-        private class OptifineDownloadVersionInfo
+        public OptifineDownloadItem(MinecraftVersion MCVersion, string Type, string Patch, string Url)
         {
-            public string MCVersion { get; set; }
-            public string Type { get; set; }
-            public string Patch { get; set; }
-            public string Url { get; set; }
-            public override string ToString()
-            {
-                return string.Format("Optifine {0} {1} {2}", MCVersion, Type.Replace('_', ' '), Patch);
-            }
+            this.MCVersion = MCVersion;
+            this.Type = Type;
+            this.Patch = Patch;
+            this.Url = Url;
         }
 
-        const string OPTIFINE_OFFICAL_DOWNLOADS = "https://www.optifine.net/downloads";
-        const string BMCLAPI_OPTIFINE_LIST_FORMAT = "https://bmclapi2.bangbang93.com/optifine/{0}";
+        public MinecraftVersion MCVersion { get; private set; }
+        public string Type { get; private set; }
+        public string Patch { get; private set; }
+        public string Url { get; private set; }
 
-        readonly MinecraftVersion Version;
-
-        List<OptifineDownloadVersionInfo> downloadVersionInfos;
-
-        public OptifineDownloader(MinecraftVersion Version)
-        {
-            this.Version = Version;
-        }
+        public override string Description => string.Format("Optifine {0} {1} {2}", MCVersion, Type.Replace('_', ' '), Patch);
 
         public override event DownloadProgress OnProgressChanged;
 
         public override void Download()
         {
             ServicePointManager.DefaultConnectionLimit = 1000;
-            Version.InstallLaunchWrapper();
-            var item = downloadVersionInfos.Find((i) => i.ToString() == this.SelectedItem);
-            Debug.Assert(item != null);
-            var url = item.Url;
-            var versionText = string.Format("{0}_{1}_{2}", item.MCVersion, item.Type, item.Patch);
+            MCVersion.InstallLaunchWrapper();
+            var url = this.Url;
+            var versionText = string.Format("{0}_{1}_{2}", this.MCVersion, this.Type, this.Patch);
             var jarname = "Optifine-" + versionText + ".jar";
             var dirpath = "optifine\\Optifine\\" + versionText + "\\";
             var downloadDirPath = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + dirpath;
@@ -61,7 +46,7 @@ namespace MFML.Download
             }
             var path = dirpath + jarname;
             var downloadPath = downloadDirPath + jarname;
-            var manifest = MinecraftManifest.AnalyzeFromVersion(this.Version);
+            var manifest = MinecraftManifest.AnalyzeFromVersion(this.MCVersion);
             using (var wc = new WebClient())
             {
                 OnProgressChanged("开始下载。。", 0);
@@ -90,18 +75,33 @@ namespace MFML.Download
             {
                 manifest.minecraftArguments += " --tweakClass optifine.OptiFineTweaker";
             }
-            
+
             OnProgressChanged(null, 100);
-            Version.SaveManifest(manifest);
+            MCVersion.SaveManifest(manifest);
+        }
+    }
+
+    public class OptifineDownloader : Downloader
+    {
+        const string OPTIFINE_OFFICAL_DOWNLOADS = "https://www.optifine.net/downloads";
+        const string BMCLAPI_OPTIFINE_LIST_FORMAT = "https://bmclapi2.bangbang93.com/optifine/{0}";
+
+        readonly MinecraftVersion Version;
+
+        List<OptifineDownloadItem> downloadVersionInfos;
+
+        public OptifineDownloader(MinecraftVersion Version)
+        {
+            this.Version = Version;
         }
 
-        public override List<string> GetAllItemsToDownload()
+        public override List<DownloadItem> GetAllItemsToDownload()
         {
-            var list = new List<string>();
+            var list = new List<DownloadItem>();
             var manifest = MinecraftManifest.AnalyzeFromVersion(this.Version);
             var id = manifest.id;
             var UseBMCL = LauncherMain.Instance.Settings.UseBMCL;
-            downloadVersionInfos = new List<OptifineDownloadVersionInfo>();
+            downloadVersionInfos = new List<OptifineDownloadItem>();
             using (var wc = new WebClient())
             {
                 if (UseBMCL)
@@ -113,18 +113,18 @@ namespace MFML.Download
                         );
                     foreach (var item in itemList)
                     {
-                        var listItem = new OptifineDownloadVersionInfo();
-                        listItem.MCVersion = item.mcversion;
-                        listItem.Type = item.type;
-                        listItem.Patch = item.patch;
-                        listItem.Url = string.Format(
+                        var MCVersion = this.Version;
+                        var Type = item.type;
+                        var Patch = item.patch;
+                        var Url = string.Format(
                             "https://bmclapi2.bangbang93.com/optifine/{0}/{1}/{2}",
                             item.mcversion,
                             item.type,
                             item.patch
                             );
+                        var listItem = new OptifineDownloadItem(MCVersion, Type, Patch, Url);
                         downloadVersionInfos.Add(listItem);
-                        list.Add(listItem.ToString());
+                        list.Add(listItem);
                     }
                 }
                 else
@@ -136,38 +136,32 @@ namespace MFML.Download
                         );
                     MatchCollection matches = Regex.Matches(
                         main.Value,
-                        "<tr class='downloadLine.*?'>\n" +
-                        "<td class='downloadLineFile.*?'>(.*?)</td>\n" +
-                        "<td class='downloadLineDownload.*?'><a href =.*?>.*?</a></td>\n" +
-                        "<td class='downloadLineMirror'><a href =\"(.*?)\">.*?</a></td>\n" +
-                        "<td class='downloadLineChangelog'><a href=.*?>.*?</a></td>\n" +
-                        "<td class='downloadLineDate'>(.*?)</td>"
+                        "<tr class='downloadLine.*?'>\\n<td class='downloadLineFile.*?'>(.*?)</td>\\n<td class='downloadLineDownload.*?'><a href=.*?>Download</a></td>\\n<td class='downloadLineMirror'><a href=\"(.*?)\">&nbsp; \\(mirror\\)</a></td>"
                         );
                     foreach (Match match in matches)
                     {
                         var groups = EnumeratorUtils.MakeListFromEnumerator(
-                            (IEnumerator<string>)match.Groups.GetEnumerator()
+                            match.Groups.GetEnumerator()
                             );
-                        var name = groups[1];
-                        var mirror = groups[2];
-                        var jar = EnumeratorUtils.MakeListFromEnumerator(
-                            (IEnumerator<string>)Regex.Match(
+                        var name = ((Group)groups[1]).Value;
+                        var mirror = ((Group)groups[2]).Value;
+                        var t = EnumeratorUtils.MakeListFromEnumerator(
+                            Regex.Match(
                                 mirror,
-                                "^http://optifine.net/adloadx?f=(.*)$"
+                                "http://optifine.net/adloadx\\?f=(.*)"
                                 ).Groups.GetEnumerator()
-                            )[1];
+                            );
+                        var jar = ((Group)t[1]).Value;
                         var adsite = wc.DownloadString(mirror);
-                        var uri = Regex.Match(adsite, string.Format("downloadx?f={0}&x=.*?'", jar)).Value;
+                        var uri = Regex.Match(adsite, string.Format("downloadx\\?f={0}&x=.*?'", jar.Replace(".", "\\."))).Value;
                         uri = uri.Substring(0, uri.Length - 1);
                         var url = "https://optifine.net/" + uri;
-                        var info = new OptifineDownloadVersionInfo();
                         var args = name.Split(' ');
-                        var mcversion = args[1];
                         var type = args[2] + "_" + args[3];
                         var patch = args[4];
-                        info.Url = url;
+                        var info = new OptifineDownloadItem(Version, type, patch, url);
                         downloadVersionInfos.Add(info);
-                        list.Add(info.ToString());
+                        list.Add(info);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using MFML.Core;
 using MFML.Game;
+using MFML.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,47 +13,40 @@ using System.Web.Script.Serialization;
 
 namespace MFML.Download
 {
-    public class MinecraftDownloader : Downloader
+    public class MinecraftDownloadItem : DownloadItem
     {
-        private class MinecraftDownloadVersionInfo
-        {
-            public string Id { get; set; }
-            public string Type { get; set; }
-            public string Url { get; set; }
-            public string ReleaseTime { get; set; }
-            public override string ToString()
-            {
-                return string.Format("版本：{0} 状态：{1} 发布时间：{2}", Id, Type, ReleaseTime);
-            }
-        }
-
-        private List<MinecraftDownloadVersionInfo> versions;
-
-        readonly string MinecraftVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
-        readonly string MinecraftAssetsURL;
-
-        public readonly bool UseBMCLAPI;
-        public readonly string MinecraftFolderName;
-
         public override event DownloadProgress OnProgressChanged;
 
-        public MinecraftDownloader(bool UseBMCLAPI, string MinecraftFolderName)
+        public string Id { get; private set; }
+        public string Type { get; private set; }
+        public string Url { get; private set; }
+        public string ReleaseTime { get; private set; }
+
+        private readonly bool UseBMCLAPI;
+        private readonly string MinecraftFolderName;
+        private readonly string MinecraftAssetsURL;
+
+        public MinecraftDownloadItem(bool UseBMCLAPI, string MinecraftFolderName, string Id, string Type, string Url, string ReleaseTime)
         {
             this.UseBMCLAPI = UseBMCLAPI;
             this.MinecraftFolderName = MinecraftFolderName;
-            MinecraftAssetsURL =
+            this.Id = Id;
+            this.Type = Type;
+            this.Url = Url;
+            this.ReleaseTime = ReleaseTime;
+            this.MinecraftAssetsURL =
                 UseBMCLAPI ?
                 "http://bmclapi2.bangbang93.com/assets/" :
                 "https://resources.download.minecraft.net/";
         }
 
+        public override string Description => string.Format("版本：{0} 状态：{1} 发布时间：{2}", Id, Type, ReleaseTime);
+
         public override void Download()
         {
             ServicePointManager.DefaultConnectionLimit = 1000;
-            var selitem = versions.Find((i) => i.ToString() == SelectedItem);
-            Debug.Assert(selitem != null);
-            var jsonURL = selitem.Url;
-            var id = selitem.Id;
+            var jsonURL = this.Url;
+            var id = this.Id;
             var MCVersion = new MinecraftVersion(id);
             Directory.CreateDirectory(MCVersion.VersionDirectory);
             MinecraftManifest info;
@@ -120,9 +114,11 @@ namespace MFML.Download
                 sw.Write(seri.Serialize(dict));
                 sw.Close();
                 OnProgressChanged("正在下载资源文件", 0);
-                var webclient = new WebClient();
                 var objects = dict["objects"];
+                const int MAX_DOWNLOADING = 100;
+                int downloading = 0;
                 int downloaded = 0;
+                int needDownload = 0;
                 foreach (var kvpair in objects)
                 {
                     var resName = kvpair.Key;
@@ -135,11 +131,27 @@ namespace MFML.Download
                     {
                         Directory.CreateDirectory(objectsFolder + hash.Substring(0, 2));
                     }
-                    webclient.DownloadFile(hashurl, localPath);
-                    downloaded++;
-                    OnProgressChanged(string.Format("已下载{0}。。。", resName), (int)((downloaded / (float)objects.Count) * 100));
+                    while (downloading >= MAX_DOWNLOADING)
+                    {
+                        Thread.Sleep(10);
+                    }
+                    var wc = new WebClient();
+                    wc.DownloadFileCompleted += (a, b) =>
+                    {
+                        downloaded++;
+                        OnProgressChanged(string.Format("已下载{0}。。。", resName), (int)((downloaded / (float)objects.Count) * 100));
+                        wc.Dispose();
+                        downloading--;
+                    };
+                    wc.DownloadProgressChanged += (o, e) => Debug.WriteLine(string.Format("{0} Downloaded {1}", resName, e.ProgressPercentage));
+                    wc.DownloadFileAsync(new Uri(hashurl), localPath);
+                    needDownload++;
+                    downloading++;
                 }
-                webclient.Dispose();
+                while (downloaded < needDownload)
+                {
+                    Thread.Sleep(500);
+                }
             }
         }
 
@@ -158,7 +170,7 @@ namespace MFML.Download
                     var rules = lib.rules;
                     foreach (var rule in rules)
                     {
-                        if(!rule.Allowed)
+                        if (!rule.Allowed)
                         {
                             NeedThisLib = false;
                             break;
@@ -240,11 +252,25 @@ namespace MFML.Download
                 Thread.Sleep(500);
             }
         }
+    }
 
-        public override List<string> GetAllItemsToDownload()
+    public class MinecraftDownloader : Downloader
+    {
+        readonly string MinecraftVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
+
+        public readonly bool UseBMCLAPI;
+        public readonly string MinecraftFolderName;
+
+        public MinecraftDownloader(bool UseBMCLAPI, string MinecraftFolderName)
         {
-            List<string> l = new List<string>();
-            versions = new List<MinecraftDownloadVersionInfo>();
+            this.UseBMCLAPI = UseBMCLAPI;
+            this.MinecraftFolderName = MinecraftFolderName;
+            
+        }
+
+        public override List<DownloadItem> GetAllItemsToDownload()
+        {
+            var l = new List<DownloadItem>();
             using (WebClient wc = new WebClient())
             {
                 var json = wc.DownloadString(MinecraftVersionManifestURL);
@@ -255,25 +281,13 @@ namespace MFML.Download
                 foreach (Match m in matches)
                 {
                     var e = m.Groups.GetEnumerator();
-                    e.MoveNext();
-                    e.MoveNext();
-                    var id = ((Group)e.Current).Value;
-                    e.MoveNext();
-                    var type = ((Group)e.Current).Value;
-                    e.MoveNext();
-                    var url = ((Group)e.Current).Value;
-                    e.MoveNext();
-                    e.MoveNext();
-                    var releaseTime = ((Group)e.Current).Value;
-                    var vi = new MinecraftDownloadVersionInfo
-                    {
-                        Id = id,
-                        Type = type,
-                        Url = url,
-                        ReleaseTime = releaseTime
-                    };
-                    versions.Add(vi);
-                    l.Add(vi.ToString());
+                    var glist = EnumeratorUtils.MakeListFromEnumerator(e);
+                    var id = ((Group)glist[1]).Value;
+                    var type = ((Group)glist[2]).Value;
+                    var url = ((Group)glist[3]).Value;
+                    var releaseTime = ((Group)glist[5]).Value;
+                    var vi = new MinecraftDownloadItem(UseBMCLAPI, MinecraftFolderName, id, type, url, releaseTime);
+                    l.Add(vi);
                 }
             }
             return l;

@@ -8,9 +8,6 @@ namespace MFML.Download
 {
     public abstract class Downloader
     {
-        public abstract event DownloadProgress OnProgressChanged;
-        public virtual string SelectedItem { get; set; }
-        public abstract List<string> GetAllItemsToDownload();
-        public abstract void Download();
+        public abstract List<DownloadItem> GetAllItemsToDownload();
     }
 }

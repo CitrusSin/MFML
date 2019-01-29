@@ -163,6 +163,7 @@
             this.versionsBox.Size = new System.Drawing.Size(157, 29);
             this.versionsBox.TabIndex = 5;
             this.versionsBox.UseSelectable = true;
+            this.versionsBox.SelectedIndexChanged += new System.EventHandler(this.versionsBox_SelectedIndexChanged);
             // 
             // playerNameBox
             // 

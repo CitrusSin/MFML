@@ -88,7 +88,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Download\Downloader.cs" />
+    <Compile Include="Download\DownloadItem.cs" />
     <Compile Include="Download\DownloadProgress.cs" />
+    <Compile Include="Download\ForgeDownloader.cs" />
     <Compile Include="Download\OptifineDownloader.cs" />
     <Compile Include="Game\Argument.cs" />
     <Compile Include="Game\AssetIndex.cs" />
