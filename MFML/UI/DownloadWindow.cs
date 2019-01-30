@@ -1,12 +1,12 @@
-﻿using System;
+﻿using MetroFramework;
+using MFML.Core;
+using MFML.Download;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
-using MFML.Download;
-using MFML.Core;
 using System.Runtime.InteropServices;
-using MetroFramework;
+using System.Windows.Forms;
 
 namespace MFML.UI
 {
@@ -20,6 +20,7 @@ namespace MFML.UI
         private static extern int GetClassLong(IntPtr hwnd, int nIndex);
         Downloader Provider;
         List<DownloadItem> Items;
+        bool CanBeClosed = true;
 
         public DownloadWindow(Downloader Provider)
         {
@@ -116,6 +117,7 @@ namespace MFML.UI
             ThemeColor = LauncherMain.Instance.Settings.ThemeColor;
             listBox1.Enabled = false;
             CloseButton.Enabled = false;
+            CanBeClosed = false;
             SetProgress("加载所有可下载版本中。。。", 0);
             downloader.RunWorkerAsync("init");
         }
@@ -124,6 +126,7 @@ namespace MFML.UI
         {
             CloseButton.Enabled = false;
             listBox1.Enabled = false;
+            CanBeClosed = false;
             downloader.RunWorkerAsync(listBox1.SelectedItem);
         }
 
@@ -136,7 +139,9 @@ namespace MFML.UI
             }
             else
             {
+#pragma warning disable IDE0019 // 使用模式匹配
                 var item = e.Argument as DownloadItem;
+#pragma warning restore IDE0019 // 使用模式匹配
                 if (item == null)
                 {
                     throw new ArgumentException("Background worker's argument must be a DownloadItem");
@@ -162,6 +167,7 @@ namespace MFML.UI
         {
             listBox1.Enabled = true;
             CloseButton.Enabled = true;
+            CanBeClosed = true;
             SetProgress("已完成！", 100);
             if ((int)e.Result == 0) 
             {
@@ -171,6 +177,16 @@ namespace MFML.UI
             {
                 MFMLMessageBox.ShowMessageBox(this, "提示", "已完成", MessageBoxButtons.OK);
             }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (!CanBeClosed)
+            {
+                e.Cancel = true;
+                return;
+            }
+            base.OnFormClosing(e);
         }
     }
 }

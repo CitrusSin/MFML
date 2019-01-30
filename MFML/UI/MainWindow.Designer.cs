@@ -43,6 +43,7 @@
             this.settingsButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.MinimizeButton = new System.Windows.Forms.Button();
+            this.forgeButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -74,6 +75,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 420);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -83,6 +85,7 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.34188F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.65812F));
+            this.tableLayoutPanel2.Controls.Add(this.forgeButton, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.optifineButton, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.downloadGame, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
@@ -93,12 +96,14 @@
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.Black;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 6;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(234, 414);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
@@ -124,7 +129,7 @@
             this.downloadGame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.downloadGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.downloadGame.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.downloadGame.Location = new System.Drawing.Point(3, 337);
+            this.downloadGame.Location = new System.Drawing.Point(3, 297);
             this.downloadGame.Name = "downloadGame";
             this.downloadGame.Size = new System.Drawing.Size(228, 34);
             this.downloadGame.TabIndex = 4;
@@ -275,6 +280,21 @@
             this.MinimizeButton.UseVisualStyleBackColor = true;
             this.MinimizeButton.Click += new System.EventHandler(this.MinimizeButton_Click);
             // 
+            // forgeButton
+            // 
+            this.forgeButton.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.tableLayoutPanel2.SetColumnSpan(this.forgeButton, 2);
+            this.forgeButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.forgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.forgeButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.forgeButton.Location = new System.Drawing.Point(3, 337);
+            this.forgeButton.Name = "forgeButton";
+            this.forgeButton.Size = new System.Drawing.Size(228, 34);
+            this.forgeButton.TabIndex = 10;
+            this.forgeButton.Text = "为当前版本安装Forge";
+            this.forgeButton.UseVisualStyleBackColor = false;
+            this.forgeButton.Click += new System.EventHandler(this.forgeButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -314,6 +334,7 @@
         private MetroFramework.Controls.MetroComboBox versionsBox;
         private MetroFramework.Controls.MetroTextBox playerNameBox;
         private System.Windows.Forms.Button optifineButton;
+        private System.Windows.Forms.Button forgeButton;
     }
 }
 

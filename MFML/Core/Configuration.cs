@@ -9,7 +9,6 @@ namespace MFML.Core
 {
     public class Configuration
     {
-
         readonly string filename;
         readonly XmlDocument configDoc = new XmlDocument();
 

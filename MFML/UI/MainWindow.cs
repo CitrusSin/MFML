@@ -198,5 +198,18 @@ namespace MFML.UI
                     "如果你暂时没有任何游戏版本可供下载，请点击\"添加版本\"来下载一个。", MessageBoxButtons.OK);
             }
         }
+
+        private void forgeButton_Click(object sender, EventArgs e)
+        {
+            if (versionsBox.SelectedItem != null)
+            {
+                Instance.ShowDownloadForgeList(versionsBox.SelectedItem as MinecraftVersion);
+            }
+            else
+            {
+                MFMLMessageBox.ShowMessageBox(this, "错误", "安装Forge需要选定一个游戏版本！\r\n" +
+                    "如果你暂时没有任何游戏版本可供下载，请点击\"添加版本\"来下载一个。", MessageBoxButtons.OK);
+            }
+        }
     }
 }

@@ -265,7 +265,6 @@ namespace MFML.Download
         {
             this.UseBMCLAPI = UseBMCLAPI;
             this.MinecraftFolderName = MinecraftFolderName;
-            
         }
 
         public override List<DownloadItem> GetAllItemsToDownload()

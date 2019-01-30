@@ -87,12 +87,14 @@ namespace MFML.Download
         const string BMCLAPI_OPTIFINE_LIST_FORMAT = "https://bmclapi2.bangbang93.com/optifine/{0}";
 
         readonly MinecraftVersion Version;
+        readonly bool UseBMCL;
 
         List<OptifineDownloadItem> downloadVersionInfos;
 
-        public OptifineDownloader(MinecraftVersion Version)
+        public OptifineDownloader(bool UseBMCL, MinecraftVersion Version)
         {
             this.Version = Version;
+            this.UseBMCL = UseBMCL;
         }
 
         public override List<DownloadItem> GetAllItemsToDownload()
@@ -100,7 +102,6 @@ namespace MFML.Download
             var list = new List<DownloadItem>();
             var manifest = MinecraftManifest.AnalyzeFromVersion(this.Version);
             var id = manifest.id;
-            var UseBMCL = LauncherMain.Instance.Settings.UseBMCL;
             downloadVersionInfos = new List<OptifineDownloadItem>();
             using (var wc = new WebClient())
             {

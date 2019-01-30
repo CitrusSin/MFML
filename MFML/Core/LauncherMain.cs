@@ -122,7 +122,16 @@ namespace MFML.Core
         public void ShowDownloadOptifineList(MinecraftVersion version)
         {
             Settings.Save();
-            var downloader = new OptifineDownloader(version);
+            var downloader = new OptifineDownloader(Settings.UseBMCL, version);
+            var downloadDialog = new DownloadWindow(downloader);
+            downloadDialog.ShowDialog(MainForm);
+            downloadDialog.Dispose();
+        }
+
+        public void ShowDownloadForgeList(MinecraftVersion version)
+        {
+            Settings.Save();
+            var downloader = new ForgeDownloader(Settings.UseBMCL, version);
             var downloadDialog = new DownloadWindow(downloader);
             downloadDialog.ShowDialog(MainForm);
             downloadDialog.Dispose();
