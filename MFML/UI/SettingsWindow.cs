@@ -1,6 +1,7 @@
 ﻿using MetroFramework;
 using MFML.Core;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -132,6 +133,11 @@ namespace MFML.UI
         private void debugBox_CheckedChanged(object sender, EventArgs e)
         {
             Instance.Settings.NeedDebug = debugBox.Checked;
+        }
+
+        private void metroLink1_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/Micrafast/MFML/blob/master/LICENSE");
         }
     }
 }

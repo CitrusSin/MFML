@@ -57,6 +57,8 @@
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.BMCLAPIBox = new MetroFramework.Controls.MetroToggle();
             this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel8 = new MetroFramework.Controls.MetroLabel();
+            this.metroLink1 = new MetroFramework.Controls.MetroLink();
             this.panel1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
@@ -124,7 +126,7 @@
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(0, 0);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 2;
             this.metroTabControl1.Size = new System.Drawing.Size(750, 470);
             this.metroTabControl1.Style = MetroFramework.MetroColorStyle.Blue;
             this.metroTabControl1.TabIndex = 0;
@@ -378,6 +380,8 @@
             this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel4);
             this.flowLayoutPanel3.Controls.Add(this.flowLayoutPanel9);
+            this.flowLayoutPanel3.Controls.Add(this.metroLabel8);
+            this.flowLayoutPanel3.Controls.Add(this.metroLink1);
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
@@ -476,6 +480,26 @@
     "对于使用BMCLAPI带来的一切纠纷，与BMCLAPI无关。\r\n3.BMCLAPI和BMCL不同，属于非开源项目\r\n4.所有使用BMCLAPI的程序必需在下载界" +
     "面或其他可视部分标明来源\r\n5.禁止在BMCLAPI上二次封装其他协议";
             // 
+            // metroLabel8
+            // 
+            this.metroLabel8.AutoSize = true;
+            this.metroLabel8.Location = new System.Drawing.Point(3, 199);
+            this.metroLabel8.Name = "metroLabel8";
+            this.metroLabel8.Size = new System.Drawing.Size(387, 57);
+            this.metroLabel8.TabIndex = 3;
+            this.metroLabel8.Text = "Micrafast\'s Minecraft Launcher 遵守GPLv3.0协议\r\n任何人均可分发此文件副本，但修改本段许可信息不被允许。\r\nMinecraf" +
+    "t是Mojang AB的商标";
+            // 
+            // metroLink1
+            // 
+            this.metroLink1.Location = new System.Drawing.Point(3, 259);
+            this.metroLink1.Name = "metroLink1";
+            this.metroLink1.Size = new System.Drawing.Size(433, 23);
+            this.metroLink1.TabIndex = 4;
+            this.metroLink1.Text = "许可详细信息：https://github.com/Micrafast/MFML/blob/master/LICENSE";
+            this.metroLink1.UseSelectable = true;
+            this.metroLink1.Click += new System.EventHandler(this.metroLink1_Click);
+            // 
             // SettingsWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -504,6 +528,7 @@
             this.flowLayoutPanel8.PerformLayout();
             this.metroTabPage3.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel9.ResumeLayout(false);
@@ -544,5 +569,7 @@
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroToggle BMCLAPIBox;
         private MetroFramework.Controls.MetroLabel metroLabel7;
+        private MetroFramework.Controls.MetroLabel metroLabel8;
+        private MetroFramework.Controls.MetroLink metroLink1;
     }
 }
