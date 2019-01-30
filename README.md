@@ -1,4 +1,4 @@
 # MFML
 
-A Minecraft launcher which has basic functions(such as download game, launch game) and support auto-downloading Forge/Optifine.
-[Download](https://github.com/Micrafast/MFML/releases) it here :)
+一个普通的MC启动器
+[下载](https://github.com/Micrafast/MFML/releases)地址 :)
