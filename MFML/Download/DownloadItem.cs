@@ -8,7 +8,9 @@ namespace MFML.Download
 {
     public abstract class DownloadItem
     {
-        public virtual event DownloadProgress OnProgressChanged;
+#pragma warning disable CS0067
+        public abstract event DownloadProgress OnProgressChanged;
+#pragma warning restore CS0067
         public abstract string Description { get; }
         public abstract void Download();
 

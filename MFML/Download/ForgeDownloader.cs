@@ -75,8 +75,13 @@ namespace MFML.Download
             foreach (Match match in matches)
             {
                 var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
-                var libname = (string)groups[1];
+                var libname = ((Group)groups[1]).Value;
                 var names = new List<string>(libname.Split(':'));
+                manifest.libraries.RemoveAll(m =>
+                {
+                    var ns = m.name.Split(':');
+                    return ns[1] == names[1];
+                });
                 if (names[1] != "launchwrapper")
                 {
                     var fnames = names[0].Split('.');
@@ -158,7 +163,7 @@ namespace MFML.Download
                         MCVersion.VersionName
                         );
                     var jsonlist = wc.DownloadString(manifestUrl);
-                    var matches = Regex.Matches(jsonlist, "\"version\": \"(.*?)\"");
+                    var matches = Regex.Matches(jsonlist, "\"version\":\"(.*?)\"");
                     foreach (Match match in matches)
                     {
                         var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
@@ -181,7 +186,7 @@ namespace MFML.Download
                         MCVersion.VersionName
                         );
                     var htmllist = wc.DownloadString(manifestUrl);
-                    var matches = Regex.Matches(htmllist, "<tr>\\n\\s*?<td class=\"download-version\">\\n\\s*?(.*?)\\n");
+                    var matches = Regex.Matches(htmllist, "<tr>\\n\\s*?<td class=\"download-version\">\\n\\s*(.*?)\\n");
                     foreach (Match match in matches)
                     {
                         var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
