@@ -77,13 +77,13 @@ namespace MFML.Download
                 var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
                 var libname = ((Group)groups[1]).Value;
                 var names = new List<string>(libname.Split(':'));
-                manifest.libraries.RemoveAll(m =>
-                {
-                    var ns = m.name.Split(':');
-                    return ns[1] == names[1];
-                });
                 if (names[1] != "launchwrapper")
                 {
+                    manifest.libraries.RemoveAll(m =>
+                    {
+                        var ns = m.name.Split(':');
+                        return ns[1] == names[1];
+                    });
                     var fnames = names[0].Split('.');
                     names.RemoveAt(0);
                     names.InsertRange(0, fnames);
