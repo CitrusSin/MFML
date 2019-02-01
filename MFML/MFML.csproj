@@ -145,6 +145,7 @@
       <DependentUpon>SettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\EnumeratorUtils.cs" />
+    <Compile Include="Utils\NetUtils.cs" />
     <EmbeddedResource Include="UI\ConsoleWindow.resx">
       <DependentUpon>ConsoleWindow.cs</DependentUpon>
     </EmbeddedResource>

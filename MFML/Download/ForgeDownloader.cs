@@ -33,10 +33,32 @@ namespace MFML.Download
 
         public override void Download()
         {
+            bool NeedBranchName = !NetUtils.IsUrlExists(Url);
+            if (NeedBranchName)
+            {
+                Url = string.Format(
+                "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}-{0}/forge-{0}-{1}-{0}-universal.jar",
+                MCVersion.VersionName,
+                ForgeVersion
+                );
+            }
+            if (UseBMCL)
+            {
+                Url = Url.Replace("files.minecraftforge.net", "bmclapi2.bangbang93.com");
+            }
             OnProgressChanged("正在检查launchwrapper安装情况并确保安装", 0);
             MCVersion.InstallLaunchWrapper();
-            var jarfile = string.Format("forge-{0}-{1}.jar", this.MCVersion.VersionName, this.ForgeVersion);
-            var folder = string.Format("net/minecraftforge/forge/{0}-{1}/", this.MCVersion.VersionName, this.ForgeVersion);
+            string jarfile, folder;
+            if (NeedBranchName)
+            {
+                jarfile = string.Format("forge-{0}-{1}-{0}.jar", this.MCVersion.VersionName, this.ForgeVersion);
+                folder = string.Format("net/minecraftforge/forge/{0}-{1}-{0}/", this.MCVersion.VersionName, this.ForgeVersion);
+            }
+            else
+            {
+                jarfile = string.Format("forge-{0}-{1}.jar", this.MCVersion.VersionName, this.ForgeVersion);
+                folder = string.Format("net/minecraftforge/forge/{0}-{1}/", this.MCVersion.VersionName, this.ForgeVersion);
+            }
             var location = folder + jarfile;
             var realLocation = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + location.Replace('/', '\\');
             var realFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + folder.Replace('/', '\\');
@@ -184,10 +206,6 @@ namespace MFML.Download
                         mc,
                         version
                         );
-                    if (UseBMCL)
-                    {
-                        url = url.Replace("files.minecraftforge.net", "bmclapi2.bangbang93.com");
-                    }
                     list.Add(new ForgeDownloadItem(this.MCVersion, version, url, this.UseBMCL));
                 }
             }
