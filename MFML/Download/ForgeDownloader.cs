@@ -139,16 +139,19 @@ namespace MFML.Download
                         Directory.CreateDirectory(localDir);
                     }
                     var localLoc = localDir + jarname;
-                    var wc = new WebClient();
-                    wc.DownloadFileCompleted += (o, e) =>
+                    if (!File.Exists(localLoc))
                     {
-                        downloadedCount++;
-                        OnProgressChanged(jarname + "已下载", (int)(downloadedCount/(double)needDownload*100));
-                        wc.Dispose();
-                    };
-                    wc.DownloadProgressChanged += (o, e) =>
-                        Debug.WriteLine(string.Format("{0} Downloaded {1}", jarname, e.ProgressPercentage));
-                    wc.DownloadFileAsync(new Uri(url), localLoc);
+                        var wc = new WebClient();
+                        wc.DownloadFileCompleted += (o, e) =>
+                        {
+                            downloadedCount++;
+                            OnProgressChanged(jarname + "已下载", (int)(downloadedCount / (double)needDownload * 100));
+                            wc.Dispose();
+                        };
+                        wc.DownloadProgressChanged += (o, e) =>
+                            Debug.WriteLine(string.Format("{0} Downloaded {1}", jarname, e.ProgressPercentage));
+                        wc.DownloadFileAsync(new Uri(url), localLoc);
+                    }
                     var library = new MinecraftLibrary
                     {
                         name = libname
