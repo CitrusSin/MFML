@@ -431,7 +431,7 @@
             this.flowLayoutPanel9.Location = new System.Drawing.Point(0, 38);
             this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(742, 161);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(742, 178);
             this.flowLayoutPanel9.TabIndex = 2;
             // 
             // flowLayoutPanel5
@@ -474,16 +474,14 @@
             this.metroLabel7.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.metroLabel7.Location = new System.Drawing.Point(3, 42);
             this.metroLabel7.Name = "metroLabel7";
-            this.metroLabel7.Size = new System.Drawing.Size(691, 114);
+            this.metroLabel7.Size = new System.Drawing.Size(691, 133);
             this.metroLabel7.TabIndex = 3;
-            this.metroLabel7.Text = "BMCLAPI协议：\r\n1.BMCLAPI下的所有文件，除BMCLAPI本身的源码之外，归源站点所有\r\n2.BMCLAPI会尽量保证文件的完整性、有效性和实时性，" +
-    "对于使用BMCLAPI带来的一切纠纷，与BMCLAPI无关。\r\n3.BMCLAPI和BMCL不同，属于非开源项目\r\n4.所有使用BMCLAPI的程序必需在下载界" +
-    "面或其他可视部分标明来源\r\n5.禁止在BMCLAPI上二次封装其他协议";
+            this.metroLabel7.Text = resources.GetString("metroLabel7.Text");
             // 
             // metroLabel8
             // 
             this.metroLabel8.AutoSize = true;
-            this.metroLabel8.Location = new System.Drawing.Point(3, 199);
+            this.metroLabel8.Location = new System.Drawing.Point(3, 216);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Size = new System.Drawing.Size(387, 57);
             this.metroLabel8.TabIndex = 3;
@@ -492,7 +490,7 @@
             // 
             // metroLink1
             // 
-            this.metroLink1.Location = new System.Drawing.Point(3, 259);
+            this.metroLink1.Location = new System.Drawing.Point(3, 276);
             this.metroLink1.Name = "metroLink1";
             this.metroLink1.Size = new System.Drawing.Size(433, 23);
             this.metroLink1.TabIndex = 4;

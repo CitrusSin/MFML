@@ -16,15 +16,13 @@ namespace MFML.Download
     {
         public MinecraftVersion MCVersion { get; private set; }
         public string ForgeVersion { get; private set; }
-        public string MCBranch { get; private set; }
         public string Url { get; private set; }
         public bool UseBMCL { get; private set; }
 
-        public ForgeDownloadItem(MinecraftVersion MCVersion, string ForgeVersion, string MCBranch, string Url, bool UseBMCL)
+        public ForgeDownloadItem(MinecraftVersion MCVersion, string ForgeVersion, string Url, bool UseBMCL)
         {
             this.MCVersion = MCVersion;
             this.ForgeVersion = ForgeVersion;
-            this.MCBranch = MCBranch;
             this.Url = Url;
             this.UseBMCL = UseBMCL;
         }
@@ -37,8 +35,8 @@ namespace MFML.Download
         {
             OnProgressChanged("正在检查launchwrapper安装情况并确保安装", 0);
             MCVersion.InstallLaunchWrapper();
-            var jarfile = string.Format("forge-{0}-{1}-{2}-universal.jar", this.MCVersion.VersionName, this.ForgeVersion, this.MCBranch);
-            var folder = string.Format("net/minecraftforge/forge/{0}-{1}-{2}/", this.MCVersion.VersionName, this.ForgeVersion, this.MCBranch);
+            var jarfile = string.Format("forge-{0}-{1}.jar", this.MCVersion.VersionName, this.ForgeVersion);
+            var folder = string.Format("net/minecraftforge/forge/{0}-{1}/", this.MCVersion.VersionName, this.ForgeVersion);
             var location = folder + jarfile;
             var realLocation = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + location.Replace('/', '\\');
             var realFolder = LauncherMain.Instance.Settings.MinecraftFolderName + "libraries\\" + folder.Replace('/', '\\');
@@ -68,7 +66,7 @@ namespace MFML.Download
             var json = sr.ReadToEnd();
             sr.Close();
             zip.Dispose();
-            var matches = Regex.Matches(json, "\"name\": \"(.*?)\"");
+            var matches = Regex.Matches(json, "\"name\"\\s*:\\s*\"(.*?)\"");
             var manifest = MinecraftManifest.AnalyzeFromVersion(MCVersion);
             int needDownload = 0;
             int downloadedCount = 0;
@@ -94,7 +92,21 @@ namespace MFML.Download
                     }
                     else
                     {
-                        url = "http://files.minecraftforge.net/maven/";
+                        if (Regex.IsMatch(
+                            json,
+                            string.Format(
+                                "\"name\"\\s*:\\s*\"{0}\"\\n" +
+                                "\\s*?\"url\"\\s*:\\s*\"http://files\\.minecraftforge\\.net/maven/\"",
+                                libname.Replace(".", "\\.")
+                                )
+                            ))
+                        {
+                            url = "http://files.minecraftforge.net/maven/";
+                        }
+                        else
+                        {
+                            url = "https://libraries.minecraft.net/";
+                        }
                     }
                     url += string.Join("/", names);
                     var jarname = names[names.Count - 2] + "-" + names[names.Count - 1] + ".jar";
@@ -156,51 +168,27 @@ namespace MFML.Download
             var list = new List<DownloadItem>();
             using (var wc = new WebClient())
             {
-                if (UseBMCL)
+                var manifestUrl = string.Format(
+                    "http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_{0}.html",
+                    MCVersion.VersionName
+                    );
+                var htmllist = wc.DownloadString(manifestUrl);
+                var matches = Regex.Matches(htmllist, "<tr>\\n\\s*?<td class=\"download-version\">\\n\\s*(.*?)\\n");
+                foreach (Match match in matches)
                 {
-                    var manifestUrl = string.Format(
-                        "https://bmclapi2.bangbang93.com/forge/minecraft/{0}",
-                        MCVersion.VersionName
+                    var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
+                    var version = ((Group)groups[1]).Value;
+                    var mc = this.MCVersion.VersionName;
+                    var url = string.Format(
+                        "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-universal.jar",
+                        mc,
+                        version
                         );
-                    var jsonlist = wc.DownloadString(manifestUrl);
-                    var matches = Regex.Matches(jsonlist, "\"version\":\"(.*?)\"");
-                    foreach (Match match in matches)
+                    if (UseBMCL)
                     {
-                        var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
-                        var version = ((Group)groups[1]).Value;
-                        var mc = this.MCVersion.VersionName;
-                        var branch = this.MCVersion.VersionName;
-                        var url = string.Format(
-                            "http://bmclapi2.bangbang93.com/maven/net/minecraftforge/forge/{0}-{1}-{2}/forge-{0}-{1}-{2}-universal.jar",
-                            mc,
-                            version,
-                            branch
-                            );
-                        list.Add(new ForgeDownloadItem(this.MCVersion, version, branch, url, this.UseBMCL));
+                        url = url.Replace("files.minecraftforge.net", "bmclapi2.bangbang93.com");
                     }
-                }
-                else
-                {
-                    var manifestUrl = string.Format(
-                        "http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_{0}.html",
-                        MCVersion.VersionName
-                        );
-                    var htmllist = wc.DownloadString(manifestUrl);
-                    var matches = Regex.Matches(htmllist, "<tr>\\n\\s*?<td class=\"download-version\">\\n\\s*(.*?)\\n");
-                    foreach (Match match in matches)
-                    {
-                        var groups = EnumeratorUtils.MakeListFromEnumerator(match.Groups.GetEnumerator());
-                        var version = ((Group)groups[1]).Value;
-                        var mc = this.MCVersion.VersionName;
-                        var branch = this.MCVersion.VersionName;
-                        var url = string.Format(
-                            "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}-{2}/forge-{0}-{1}-{2}-universal.jar",
-                            mc,
-                            version,
-                            branch
-                            );
-                        list.Add(new ForgeDownloadItem(this.MCVersion, version, branch, url, this.UseBMCL));
-                    }
+                    list.Add(new ForgeDownloadItem(this.MCVersion, version, url, this.UseBMCL));
                 }
             }
             return list;

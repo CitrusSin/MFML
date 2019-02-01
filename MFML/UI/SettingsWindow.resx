@@ -126,6 +126,15 @@
   <metadata name="panel1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="metroLabel7.Text" xml:space="preserve">
+    <value>BMCLAPI协议：
+1.BMCLAPI下的所有文件，除BMCLAPI本身的源码之外，归源站点所有
+2.BMCLAPI会尽量保证文件的完整性、有效性和实时性，对于使用BMCLAPI带来的一切纠纷，与BMCLAPI无关。
+3.BMCLAPI和BMCL不同，属于非开源项目
+4.所有使用BMCLAPI的程序必需在下载界面或其他可视部分标明来源
+5.禁止在BMCLAPI上二次封装其他协议
+详情请见 http://bmclapidoc.bangbang93.com/</value>
+  </data>
   <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
