@@ -54,7 +54,7 @@ namespace MFML.Launch
             get { return Version.JarPath; }
         }
 
-        public string PlayerName { get; set; }
+        public virtual string PlayerName { get; protected set; }
 
         public abstract string UUID { get; }
 
